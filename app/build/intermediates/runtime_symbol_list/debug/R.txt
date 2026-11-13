@@ -3883,8 +3883,8 @@ int layout abc_search_view 0x7f0d0019
 int layout abc_select_dialog_material 0x7f0d001a
 int layout abc_tooltip 0x7f0d001b
 int layout activity_auth 0x7f0d001c
-int layout activity_chapters 0x7f0d001d
-int layout activity_main 0x7f0d001e
+int layout activity_main 0x7f0d001d
+int layout activity_media_detail 0x7f0d001e
 int layout activity_player 0x7f0d001f
 int layout custom_dialog 0x7f0d0020
 int layout design_bottom_navigation_item 0x7f0d0021
@@ -3914,9 +3914,9 @@ int layout exo_styled_sub_settings_list_item 0x7f0d0038
 int layout exo_track_selection_dialog 0x7f0d0039
 int layout ime_base_split_test_activity 0x7f0d003a
 int layout ime_secondary_split_test_activity 0x7f0d003b
-int layout item_chapter_card 0x7f0d003c
-int layout item_course_card 0x7f0d003d
-int layout item_lesson_row 0x7f0d003e
+int layout item_episode_row 0x7f0d003c
+int layout item_media_card 0x7f0d003d
+int layout item_season_card 0x7f0d003e
 int layout m3_alert_dialog 0x7f0d003f
 int layout m3_alert_dialog_actions 0x7f0d0040
 int layout m3_alert_dialog_title 0x7f0d0041

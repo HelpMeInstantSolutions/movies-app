@@ -27,6 +27,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import `in`.mybhiwani.cinemas.R
 
 data class MediaItem(
     val id: Int,
@@ -44,15 +45,12 @@ data class MediaItem(
     val totalEpisodes: Int = 0
 )
 
-// Legacy alias for Course so existing references compile seamlessly
-typealias Course = MediaItem
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutEmptyState: View
     private lateinit var tvEmptyTitle: TextView
-    private lateinit var tvCourseCountBadge: TextView
+    private lateinit var tvMediaCountBadge: TextView
     private lateinit var etSearch: EditText
     private lateinit var tvTabAll: TextView
     private lateinit var tvTabMovies: TextView
@@ -61,14 +59,14 @@ class MainActivity : AppCompatActivity() {
     private val allMedia = mutableListOf<MediaItem>()
     private val displayedMedia = mutableListOf<MediaItem>()
     private lateinit var adapter: MediaAdapter
-    private var activeFilter: String = "all" // "all", "movie", "series"
+    private var activeFilter: String = "all"
 
-    private val apiEndpoint = "https://cinemas.mybhiwani.in/api/courses.php?action=list"
+    private val apiEndpoint = "https://cinemas.mybhiwani.in/api/movies.php?action=list"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Strict Anti-Screen Capture & Anti-Piracy Flag (FLAG_SECURE)
+        // Strict Anti-Piracy Flag (FLAG_SECURE)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_SECURE,
             WindowManager.LayoutParams.FLAG_SECURE
@@ -85,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewCourses)
         layoutEmptyState = findViewById(R.id.layoutEmptyState)
         tvEmptyTitle = findViewById(R.id.tvEmptyTitle)
-        tvCourseCountBadge = findViewById(R.id.tvCourseCountBadge)
+        tvMediaCountBadge = findViewById(R.id.tvCourseCountBadge)
         etSearch = findViewById(R.id.etSearchCourses)
         tvTabAll = findViewById(R.id.tvTabAll)
         tvTabMovies = findViewById(R.id.tvTabPaid)
@@ -94,14 +92,12 @@ class MainActivity : AppCompatActivity() {
         tvTabMovies.text = "🎬 Movies"
         tvTabSeries.text = "📺 Series"
 
-        // Grid Layout: 2 columns for movie/series poster cards
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         adapter = MediaAdapter(displayedMedia) { media ->
             openMediaDetail(media)
         }
         recyclerView.adapter = adapter
 
-        // Setup user header
         val tvUserWelcome = findViewById<TextView>(R.id.tvUserWelcome)
         val userName = SessionManager.getUserName(this)
         tvUserWelcome.text = if (!userName.isNullOrEmpty()) "Welcome, $userName 🍿" else "Cinemas & Shows 🍿"
@@ -192,9 +188,9 @@ class MainActivity : AppCompatActivity() {
                                 duration = obj.optString("duration", ""),
                                 rating = obj.optString("rating", "8.5"),
                                 language = obj.optString("language", "Hindi"),
-                                genreName = obj.optString("genre_name", obj.optString("category_name", "Cinema")),
-                                totalSeasons = obj.optInt("total_seasons", obj.optInt("total_chapters", 0)),
-                                totalEpisodes = obj.optInt("total_episodes", obj.optInt("total_videos", 0))
+                                genreName = obj.optString("genre_name", "Cinema"),
+                                totalSeasons = obj.optInt("total_seasons", 0),
+                                totalEpisodes = obj.optInt("total_episodes", 0)
                             )
                         )
                     }
@@ -228,7 +224,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         adapter.notifyDataSetChanged()
-        tvCourseCountBadge.text = "${displayedMedia.size} Titles"
+        tvMediaCountBadge.text = "${displayedMedia.size} Titles"
 
         if (displayedMedia.isEmpty()) {
             layoutEmptyState.visibility = View.VISIBLE
@@ -241,9 +237,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openMediaDetail(media: MediaItem) {
-        val intent = Intent(this, ChaptersActivity::class.java).apply {
+        val intent = Intent(this, MediaDetailActivity::class.java).apply {
+            putExtra("MEDIA_ID", media.id)
             putExtra("COURSE_ID", media.id)
+            putExtra("MEDIA_TITLE", media.title)
             putExtra("COURSE_TITLE", media.title)
+            putExtra("MEDIA_DESC", media.description)
             putExtra("COURSE_DESC", media.description)
             putExtra("MEDIA_TYPE", media.type)
             putExtra("MEDIA_POSTER", media.poster)
@@ -281,7 +280,7 @@ class MediaAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_course_card, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_media_card, parent, false)
         return MediaViewHolder(view)
     }
 
@@ -305,6 +304,3 @@ class MediaAdapter(
 
     override fun getItemCount(): Int = items.size
 }
-
-
-

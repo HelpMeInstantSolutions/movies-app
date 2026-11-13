@@ -3884,8 +3884,8 @@ layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_auth
-layout activity_chapters
 layout activity_main
+layout activity_media_detail
 layout activity_player
 layout custom_dialog
 layout design_bottom_navigation_item
@@ -3915,9 +3915,9 @@ layout exo_styled_sub_settings_list_item
 layout exo_track_selection_dialog
 layout ime_base_split_test_activity
 layout ime_secondary_split_test_activity
-layout item_chapter_card
-layout item_course_card
-layout item_lesson_row
+layout item_episode_row
+layout item_media_card
+layout item_season_card
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title

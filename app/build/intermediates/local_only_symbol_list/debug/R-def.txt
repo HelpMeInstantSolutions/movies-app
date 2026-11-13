@@ -100,12 +100,12 @@ id tvTopCourseTitle
 id tvUserWelcome
 id videoContainer
 layout activity_auth
-layout activity_chapters
 layout activity_main
+layout activity_media_detail
 layout activity_player
-layout item_chapter_card
-layout item_course_card
-layout item_lesson_row
+layout item_episode_row
+layout item_media_card
+layout item_season_card
 mipmap ic_launcher
 mipmap ic_launcher_round
 string app_name
