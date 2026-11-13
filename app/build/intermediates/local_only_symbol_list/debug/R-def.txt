@@ -11,6 +11,7 @@ drawable bg_tab_active
 drawable bg_tab_inactive
 drawable ic_arrow_back
 drawable ic_cinema_logo
+drawable ic_cinema_logo_hd
 drawable ic_email
 drawable ic_expand_less
 drawable ic_expand_more
@@ -57,10 +58,12 @@ id exoPlayerView
 id ivEpisodePlay
 id ivMediaPoster
 id ivSeasonChevron
+id ivSplashLogo
 id layoutEmptyMedia
 id layoutEmptyState
 id layoutEpisodeItem
 id layoutLockOverlay
+id layoutSplashContent
 id mediaDetailLoader
 id navDrawer
 id playerLoader
@@ -78,6 +81,7 @@ id seasonHeaderRow
 id seekLeftBubble
 id seekRightBubble
 id seriesSectionHeader
+id splashLoader
 id tabLogin
 id tabRegister
 id tvAuthSubtitle
@@ -107,6 +111,7 @@ id tvSeasonEpisodesBadge
 id tvSeasonInfo
 id tvSeasonTitle
 id tvSeriesSectionTitle
+id tvSplashTitle
 id tvTabAll
 id tvTabMovies
 id tvTabSeries
@@ -118,6 +123,7 @@ layout activity_auth
 layout activity_main
 layout activity_media_detail
 layout activity_player
+layout activity_splash
 layout item_episode_row
 layout item_media_card
 layout item_season_card

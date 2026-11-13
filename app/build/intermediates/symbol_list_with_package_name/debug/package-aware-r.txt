@@ -3075,6 +3075,7 @@ drawable ic_call_answer_video_low
 drawable ic_call_decline
 drawable ic_call_decline_low
 drawable ic_cinema_logo
+drawable ic_cinema_logo_hd
 drawable ic_clear_black_24
 drawable ic_clock_black_24dp
 drawable ic_email
@@ -3465,6 +3466,7 @@ id item_touch_helper_previous_elevation
 id ivEpisodePlay
 id ivMediaPoster
 id ivSeasonChevron
+id ivSplashLogo
 id jumpToEnd
 id jumpToStart
 id labeled
@@ -3473,6 +3475,7 @@ id layoutEmptyMedia
 id layoutEmptyState
 id layoutEpisodeItem
 id layoutLockOverlay
+id layoutSplashContent
 id left
 id leftToRight
 id legacy
@@ -3658,6 +3661,7 @@ id snapMargins
 id spacer
 id special_effects_controller_view_tag
 id spherical_gl_surface_view
+id splashLoader
 id spline
 id split_action_bar
 id spread
@@ -3755,6 +3759,7 @@ id tvSeasonEpisodesBadge
 id tvSeasonInfo
 id tvSeasonTitle
 id tvSeriesSectionTitle
+id tvSplashTitle
 id tvTabAll
 id tvTabMovies
 id tvTabSeries
@@ -3902,6 +3907,7 @@ layout activity_auth
 layout activity_main
 layout activity_media_detail
 layout activity_player
+layout activity_splash
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog

@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:2:1-44:12
-INJECTED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:2:1-44:12
+ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:2:1-45:12
+INJECTED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:2:1-45:12
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\dk776\.gradle\caches\transforms-3\3c6da16fc08c5e7b7caed394bbbfefaa\transformed\material-1.11.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\dk776\.gradle\caches\transforms-3\4a1fd2fbef20642ba8832362b45cdf3c\transformed\jetified-appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\dk776\.gradle\caches\transforms-3\fffb3d29cce5e588feee309082b11d5f\transformed\constraintlayout-2.0.1\AndroidManifest.xml:2:1-11:12
@@ -83,8 +83,8 @@ MERGED from [androidx.media3:media3-common:1.2.1] C:\Users\dk776\.gradle\caches\
 	android:name
 		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:5:22-76
 application
-ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:7:5-42:19
-INJECTED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:7:5-42:19
+ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:7:5-43:19
+INJECTED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:7:5-43:19
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\dk776\.gradle\caches\transforms-3\3c6da16fc08c5e7b7caed394bbbfefaa\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\dk776\.gradle\caches\transforms-3\3c6da16fc08c5e7b7caed394bbbfefaa\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\dk776\.gradle\caches\transforms-3\fffb3d29cce5e588feee309082b11d5f\transformed\constraintlayout-2.0.1\AndroidManifest.xml:9:5-20
@@ -119,48 +119,48 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\dk
 		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:14:9-48
 	android:usesCleartextTraffic
 		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:13:9-44
-activity#in.mybhiwani.cinemas.AuthActivity
-ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:16:9-23:20
+activity#in.mybhiwani.cinemas.SplashActivity
+ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:17:9-24:20
 	android:exported
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:18:13-36
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:19:13-36
 	android:name
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:17:13-41
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:18:13-43
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:19:13-22:29
+ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:20:13-23:29
 action#android.intent.action.MAIN
-ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:20:17-69
+ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:21:17-69
 	android:name
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:20:25-66
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:21:25-66
 category#android.intent.category.LAUNCHER
-ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:21:17-77
+ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:22:17-77
 	android:name
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:21:27-74
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:22:27-74
+activity#in.mybhiwani.cinemas.AuthActivity
+ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:26:9-28:40
+	android:exported
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:28:13-37
+	android:name
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:27:13-41
 activity#in.mybhiwani.cinemas.MainActivity
-ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:25:9-27:40
+ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:30:9-32:40
 	android:exported
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:27:13-37
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:32:13-37
 	android:name
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:26:13-41
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:31:13-41
 activity#in.mybhiwani.cinemas.MediaDetailActivity
-ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:29:9-31:40
+ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:34:9-36:40
 	android:exported
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:31:13-37
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:36:13-37
 	android:name
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:30:13-48
-activity#in.mybhiwani.cinemas.ChaptersActivity
-ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:33:9-35:40
-	android:exported
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:35:13-37
-	android:name
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:34:13-45
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:35:13-48
 activity#in.mybhiwani.cinemas.PlayerActivity
-ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:37:9-40:40
+ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:38:9-41:40
 	android:exported
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:40:13-37
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:41:13-37
 	android:configChanges
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:39:13-106
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:40:13-106
 	android:name
-		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:38:13-43
+		ADDED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml:39:13-43
 uses-sdk
 INJECTED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from E:\apps\timepass\movies\android_app\app\src\main\AndroidManifest.xml

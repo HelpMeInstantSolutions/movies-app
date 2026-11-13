@@ -248,6 +248,3 @@ class MediaDetailActivity : AppCompatActivity() {
         startActivity(intent)
     }
 }
-
-// Legacy alias so Manifest and external intents seamlessly resolve
-typealias ChaptersActivity = MediaDetailActivity

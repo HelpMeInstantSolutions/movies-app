@@ -28,8 +28,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CinemasApp"
         android:usesCleartextTraffic="true" >
+
+        <!-- Splash Screen with Animation as Primary Launcher -->
         <activity
-            android:name="in.mybhiwani.cinemas.AuthActivity"
+            android:name="in.mybhiwani.cinemas.SplashActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,13 +40,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="in.mybhiwani.cinemas.AuthActivity"
+            android:exported="false" />
+        <activity
             android:name="in.mybhiwani.cinemas.MainActivity"
             android:exported="false" />
         <activity
             android:name="in.mybhiwani.cinemas.MediaDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name="in.mybhiwani.cinemas.ChaptersActivity"
             android:exported="false" />
         <activity
             android:name="in.mybhiwani.cinemas.PlayerActivity"

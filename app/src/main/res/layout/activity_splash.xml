@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#07090E">
+
+    <!-- Subtle Radial Glow in Center -->
+    <ImageView
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/bg_seek_bubble"
+        android:tint="#15F43F5E" />
+
+    <!-- Center Content (Animated) -->
+    <LinearLayout
+        android:id="@+id/layoutSplashContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!-- Logo Icon -->
+        <ImageView
+            android:id="@+id/ivSplashLogo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_cinema_logo_hd"
+            android:elevation="12dp" />
+
+        <!-- App Brand Title -->
+        <TextView
+            android:id="@+id/tvSplashTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CINEMAS"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.25"
+            android:layout_marginTop="20dp" />
+
+    </LinearLayout>
+
+    <!-- Bottom Loading Spinner & Tag -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/splashLoader"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:indeterminateTint="#F43F5E" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cinemas.mybhiwani.in"
+            android:textColor="#475569"
+            android:textSize="11sp"
+            android:letterSpacing="0.05"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+</RelativeLayout>
