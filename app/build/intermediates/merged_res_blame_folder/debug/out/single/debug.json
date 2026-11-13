@@ -1,11 +1,11 @@
 [
     {
-        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/layout_item_episode_row.xml.flat",
-        "source": "in.mybhiwani.cinemas.app-main-40:/layout/item_episode_row.xml"
-    },
-    {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_person.xml.flat",
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_person.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_item_media_card.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\item_media_card.xml"
     },
     {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\mipmap-hdpi_ic_launcher_round.png.flat",
@@ -20,36 +20,20 @@
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_cinema_logo.xml"
     },
     {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_speed.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_speed.xml"
-    },
-    {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\mipmap-xhdpi_ic_launcher_round.png.flat",
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\mipmap-xhdpi\\ic_launcher_round.png"
-    },
-    {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_search.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_search.xml"
-    },
-    {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_folder.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_folder.xml"
-    },
-    {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_email.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_email.xml"
-    },
-    {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\mipmap-xxxhdpi\\ic_launcher_round.png"
     },
     {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_activity_auth.xml.flat",
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\activity_auth.xml"
     },
     {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_item_lesson_row.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\item_lesson_row.xml"
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\mipmap-xxxhdpi\\ic_launcher_round.png"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_email.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_email.xml"
     },
     {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_replay_10.xml.flat",
@@ -64,28 +48,16 @@
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\bg_tab_inactive.xml"
     },
     {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_activity_media_detail.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\activity_media_detail.xml"
+    },
+    {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_bg_chapter_header.xml.flat",
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\bg_chapter_header.xml"
     },
     {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_logout.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_logout.xml"
-    },
-    {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\mipmap-hdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\mipmap-hdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/layout_activity_media_detail.xml.flat",
-        "source": "in.mybhiwani.cinemas.app-main-40:/layout/activity_media_detail.xml"
-    },
-    {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_activity_chapters.xml.flat",
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\activity_chapters.xml"
-    },
-    {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_item_course_card.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\item_course_card.xml"
     },
     {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_lock.xml.flat",
@@ -100,24 +72,12 @@
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\mipmap-mdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_forward_10.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_forward_10.xml"
-    },
-    {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\mipmap-xxxhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\mipmap-xxxhdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_bg_input_field.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\bg_input_field.xml"
-    },
-    {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_activity_main.xml.flat",
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\activity_main.xml"
-    },
-    {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\mipmap-xxhdpi\\ic_launcher.png"
     },
     {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\mipmap-xxhdpi_ic_launcher_round.png.flat",
@@ -136,28 +96,8 @@
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\bg_seek_bubble.xml"
     },
     {
-        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/layout_item_media_card.xml.flat",
-        "source": "in.mybhiwani.cinemas.app-main-40:/layout/item_media_card.xml"
-    },
-    {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_activity_player.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\activity_player.xml"
-    },
-    {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_fullscreen_exit.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_fullscreen_exit.xml"
-    },
-    {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_bg_gradient_brand.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\bg_gradient_brand.xml"
-    },
-    {
-        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/layout_item_season_card.xml.flat",
-        "source": "in.mybhiwani.cinemas.app-main-40:/layout/item_season_card.xml"
-    },
-    {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_skip_next.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_skip_next.xml"
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_item_episode_row.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\item_episode_row.xml"
     },
     {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_expand_less.xml.flat",
@@ -172,19 +112,83 @@
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\bg_tab_active.xml"
     },
     {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_bg_rounded_card.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\bg_rounded_card.xml"
-    },
-    {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\mipmap-mdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\mipmap-mdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_item_chapter_card.xml.flat",
-        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\item_chapter_card.xml"
-    },
-    {
         "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_expand_more.xml.flat",
         "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_expand_more.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_speed.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_speed.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_search.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_search.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_folder.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_folder.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_item_lesson_row.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\item_lesson_row.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_logout.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_logout.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_item_course_card.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\item_course_card.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_forward_10.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_forward_10.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_bg_input_field.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\bg_input_field.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\mipmap-xxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_item_season_card.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\item_season_card.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_activity_player.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\activity_player.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_fullscreen_exit.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_fullscreen_exit.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_bg_gradient_brand.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\bg_gradient_brand.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_ic_skip_next.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\ic_skip_next.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/layout_activity_auth.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/layout/activity_auth.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\drawable_bg_rounded_card.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\drawable\\bg_rounded_card.xml"
+    },
+    {
+        "merged": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-merged_res-38:\\layout_item_chapter_card.xml.flat",
+        "source": "C:\\Users\\dk776\\.gradle\\daemon\\8.5\\in.mybhiwani.cinemas.app-main-40:\\layout\\item_chapter_card.xml"
     }
 ]

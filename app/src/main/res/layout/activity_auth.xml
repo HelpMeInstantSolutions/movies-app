@@ -29,9 +29,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Insight Academy"
+                android:text="Cinemas"
                 android:textColor="#FFFFFF"
-                android:textSize="24sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 android:letterSpacing="0.02"
                 android:layout_marginTop="14dp" />
@@ -39,8 +39,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your Gateway to Government Exam Success"
-                android:textColor="#38BDF8"
+                android:text="Unlimited Blockbuster Movies &amp; Web Series"
+                android:textColor="#F43F5E"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:layout_marginTop="4dp" />
@@ -102,7 +102,7 @@
                 android:id="@+id/tvAuthSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Enter your credentials to access your enrolled courses"
+                android:text="Sign in to stream your favorite movies &amp; series"
                 android:textColor="#94A3B8"
                 android:textSize="12sp"
                 android:layout_marginTop="4dp"
@@ -202,7 +202,7 @@
                 android:id="@+id/btnSubmitAuth"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:text="Sign In to Account"
+                android:text="Sign In to Watch"
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:textColor="#FFFFFF"
@@ -214,8 +214,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="18dp"
-                android:text="New to Insight? Create an account"
-                android:textColor="#38BDF8"
+                android:text="New to Cinemas? Create an account"
+                android:textColor="#F43F5E"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
@@ -224,7 +224,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="🔒 High Quality DRM-Protected Video Learning"
+            android:text="🍿 High Quality Private Cinema Streaming Engine"
             android:textColor="#64748B"
             android:textSize="11sp"
             android:layout_marginTop="20dp" />

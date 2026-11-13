@@ -93,10 +93,10 @@ class AuthActivity : AppCompatActivity() {
             tabRegister.setBackgroundResource(R.drawable.bg_tab_active)
             tabRegister.setTextColor(Color.WHITE)
 
-            tvTitle.text = "Create Student Account ✨"
-            tvSubtitle.text = "Register to access your online video batches"
+            tvTitle.text = "Create Cinemas Account 🍿"
+            tvSubtitle.text = "Register to watch private high-definition movies & web series"
             containerName.visibility = View.VISIBLE
-            btnSubmit.text = "Create Account & Start Learning"
+            btnSubmit.text = "Create Account & Start Watching"
             tvToggle.text = "Already registered? Sign In here"
         } else {
             tabLogin.setBackgroundResource(R.drawable.bg_tab_active)
@@ -105,11 +105,11 @@ class AuthActivity : AppCompatActivity() {
             tabRegister.setBackgroundResource(0)
             tabRegister.setTextColor(Color.parseColor("#94A3B8"))
 
-            tvTitle.text = "Welcome Back 👋"
-            tvSubtitle.text = "Enter your credentials to access your enrolled courses"
+            tvTitle.text = "Welcome Back 🎬"
+            tvSubtitle.text = "Sign in to access your personal cinema watch list"
             containerName.visibility = View.GONE
-            btnSubmit.text = "Sign In to Account"
-            tvToggle.text = "New to Insight? Create an account"
+            btnSubmit.text = "Sign In to Watch"
+            tvToggle.text = "New to Cinemas? Create an account"
         }
     }
 
