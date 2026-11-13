@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layoutLessonItem"
+    android:id="@+id/layoutEpisodeItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -9,9 +9,9 @@
     android:layout_marginBottom="8dp"
     android:background="@drawable/bg_rounded_card">
 
-    <!-- Lesson Index Pill -->
+    <!-- Episode Index Pill -->
     <TextView
-        android:id="@+id/tvLessonNum"
+        android:id="@+id/tvEpisodeNum"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:gravity="center"
@@ -30,7 +30,7 @@
         android:layout_marginEnd="8dp">
 
         <TextView
-            android:id="@+id/tvLessonTitle"
+            android:id="@+id/tvEpisodeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
@@ -38,7 +38,7 @@
             android:textStyle="bold"
             android:maxLines="2"
             android:ellipsize="end"
-            android:text="Lecture Title" />
+            android:text="Episode 1: Pilot" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -49,34 +49,34 @@
 
             <!-- Duration Pill -->
             <TextView
-                android:id="@+id/tvLessonDuration"
+                android:id="@+id/tvEpisodeDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#94A3B8"
                 android:textSize="11sp"
-                android:text="15:00" />
+                android:text="45:00" />
 
             <TextView
-                android:id="@+id/tvLessonBadge"
+                android:id="@+id/tvEpisodeBadge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:text="HD STREAM"
                 android:textColor="#10B981"
-                android:textSize="10sp"
+                android:textSize="9sp"
                 android:textStyle="bold"
-                android:text="• Free Demo" />
+                android:background="@drawable/bg_glass_pill"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="1dp"
+                android:layout_marginStart="8dp" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Play Icon with circle -->
+    <!-- Play Icon Button -->
     <ImageView
-        android:id="@+id/icPlayStatus"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:background="@drawable/bg_tab_inactive"
-        android:padding="8dp"
+        android:id="@+id/ivEpisodePlay"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:src="@drawable/ic_play_arrow"
-        android:tint="#FFFFFF"
-        android:contentDescription="Play" />
+        android:tint="#F43F5E" />
 
 </LinearLayout>

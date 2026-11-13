@@ -31,10 +31,12 @@ class MediaDetailActivity : AppCompatActivity() {
     private var mediaType: String = "movie"
 
     private lateinit var tvTopMediaTitle: TextView
+    private lateinit var tvTopMediaSubtitle: TextView
     private lateinit var tvHeaderMediaTitle: TextView
     private lateinit var tvHeaderMediaDesc: TextView
     private lateinit var tvMediaStats: TextView
     private lateinit var tvSeasonCountPill: TextView
+    private lateinit var seriesSectionHeader: View
     private lateinit var btnStartStreaming: Button
     private lateinit var mediaLoader: ProgressBar
     private lateinit var layoutEmptyMedia: View
@@ -65,24 +67,27 @@ class MediaDetailActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        val btnBack = findViewById<ImageButton>(R.id.btnBackFromChapters)
-        tvTopMediaTitle = findViewById(R.id.tvTopCourseTitle)
-        val tvTopSubtitle = findViewById<TextView>(R.id.tvTopCourseSubtitle)
-        tvHeaderMediaTitle = findViewById(R.id.tvHeaderCourseTitle)
-        tvHeaderMediaDesc = findViewById(R.id.tvHeaderCourseDesc)
-        tvMediaStats = findViewById(R.id.tvCurriculumStats)
-        tvSeasonCountPill = findViewById(R.id.tvChapterCountPill)
-        btnStartStreaming = findViewById(R.id.btnStartLearning)
-        mediaLoader = findViewById(R.id.chaptersLoader)
-        layoutEmptyMedia = findViewById(R.id.layoutEmptyChapters)
-        rvSeasons = findViewById(R.id.rvChapters)
+        val btnBack = findViewById<ImageButton>(R.id.btnBackFromDetails)
+        tvTopMediaTitle = findViewById(R.id.tvTopMediaTitle)
+        tvTopMediaSubtitle = findViewById(R.id.tvTopMediaSubtitle)
+        tvHeaderMediaTitle = findViewById(R.id.tvHeaderMediaTitle)
+        tvHeaderMediaDesc = findViewById(R.id.tvHeaderMediaDesc)
+        tvMediaStats = findViewById(R.id.tvMediaStats)
+        tvSeasonCountPill = findViewById(R.id.tvSeasonCountPill)
+        seriesSectionHeader = findViewById(R.id.seriesSectionHeader)
+        btnStartStreaming = findViewById(R.id.btnStartStreaming)
+        mediaLoader = findViewById(R.id.mediaDetailLoader)
+        layoutEmptyMedia = findViewById(R.id.layoutEmptyMedia)
+        rvSeasons = findViewById(R.id.rvSeasons)
 
         if (mediaType == "series") {
-            tvTopSubtitle.text = "Seasons & Episodes"
+            tvTopMediaSubtitle.text = "Seasons & Episodes"
             btnStartStreaming.text = "Watch S1:E1 ▶"
+            seriesSectionHeader.visibility = View.VISIBLE
         } else {
-            tvTopSubtitle.text = "Full Feature Movie"
+            tvTopMediaSubtitle.text = "Full Feature Movie"
             btnStartStreaming.text = "Play Movie Now ▶"
+            seriesSectionHeader.visibility = View.GONE
         }
 
         tvTopMediaTitle.text = mediaTitle
@@ -137,7 +142,6 @@ class MediaDetailActivity : AppCompatActivity() {
 
                     seasonsList.clear()
                     allEpisodesList.clear()
-
                     var totalEpCount = 0
 
                     if (seasonsArr != null) {
@@ -192,6 +196,7 @@ class MediaDetailActivity : AppCompatActivity() {
                     if (mediaType == "movie") {
                         tvMediaStats.text = "HD 1080p • Dolby Atmos Audio"
                         tvSeasonCountPill.text = "Feature Film"
+                        seriesSectionHeader.visibility = View.GONE
                         layoutEmptyMedia.visibility = View.GONE
                         rvSeasons.visibility = View.GONE
                         btnStartStreaming.visibility = View.VISIBLE
@@ -204,6 +209,7 @@ class MediaDetailActivity : AppCompatActivity() {
                     } else {
                         layoutEmptyMedia.visibility = View.GONE
                         rvSeasons.visibility = View.VISIBLE
+                        seriesSectionHeader.visibility = View.VISIBLE
                         btnStartStreaming.visibility = View.VISIBLE
                         tvMediaStats.text = "${seasonsList.size} Seasons • $totalEpCount Episodes"
                         tvSeasonCountPill.text = "${seasonsList.size} Seasons"
@@ -231,6 +237,7 @@ class MediaDetailActivity : AppCompatActivity() {
             putExtra("COURSE_ID", mediaId)
             putExtra("MEDIA_TITLE", mediaTitle)
             putExtra("COURSE_TITLE", mediaTitle)
+            putExtra("MEDIA_TYPE", mediaType)
             putExtra("EPISODE_ID", episode.id)
             putExtra("LESSON_ID", episode.id)
             putExtra("EPISODE_TITLE", episode.title)

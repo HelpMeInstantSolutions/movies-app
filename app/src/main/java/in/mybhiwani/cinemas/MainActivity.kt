@@ -1,5 +1,6 @@
 package `in`.mybhiwani.cinemas
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -9,11 +10,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,12 +44,14 @@ data class MediaItem(
     val duration: String,
     val rating: String,
     val language: String,
-    val genreName: String,
     val totalSeasons: Int = 0,
     val totalEpisodes: Int = 0
 )
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var sessionManager: SessionManager
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var layoutEmptyState: View
@@ -74,40 +80,74 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
+        sessionManager = SessionManager(this)
+
         initViews()
+        setupDrawer()
         setupListeners()
         loadMedia()
     }
 
     private fun initViews() {
-        recyclerView = findViewById(R.id.recyclerViewCourses)
+        drawerLayout = findViewById(R.id.drawerLayout)
+        recyclerView = findViewById(R.id.recyclerViewMedia)
         layoutEmptyState = findViewById(R.id.layoutEmptyState)
         tvEmptyTitle = findViewById(R.id.tvEmptyTitle)
-        tvMediaCountBadge = findViewById(R.id.tvCourseCountBadge)
-        etSearch = findViewById(R.id.etSearchCourses)
+        tvMediaCountBadge = findViewById(R.id.tvMediaCountBadge)
+        etSearch = findViewById(R.id.etSearchMedia)
         tvTabAll = findViewById(R.id.tvTabAll)
-        tvTabMovies = findViewById(R.id.tvTabPaid)
-        tvTabSeries = findViewById(R.id.tvTabFree)
+        tvTabMovies = findViewById(R.id.tvTabMovies)
+        tvTabSeries = findViewById(R.id.tvTabSeries)
 
         tvTabMovies.text = "🎬 Movies"
-        tvTabSeries.text = "📺 Series"
+        tvTabSeries.text = "📺 Web Series"
 
         recyclerView.layoutManager = GridLayoutManager(this, 2)
         adapter = MediaAdapter(displayedMedia) { media ->
             openMediaDetail(media)
         }
         recyclerView.adapter = adapter
+    }
 
-        val tvUserWelcome = findViewById<TextView>(R.id.tvUserWelcome)
-        val userName = SessionManager.getUserName(this)
-        tvUserWelcome.text = if (!userName.isNullOrEmpty()) "Welcome, $userName 🍿" else "Cinemas & Shows 🍿"
+    private fun setupDrawer() {
+        findViewById<View>(R.id.btnOpenDrawer).setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        val tvDrawerName = findViewById<TextView>(R.id.tvDrawerUserName)
+        val tvDrawerPhone = findViewById<TextView>(R.id.tvDrawerUserPhone)
+        val tvDrawerEmail = findViewById<TextView>(R.id.tvDrawerUserEmail)
+
+        val name = sessionManager.getUserName()
+        val phone = sessionManager.getUserPhone()
+        val email = sessionManager.getUserEmail()
+
+        tvDrawerName.text = if (name.isNotEmpty()) name else "Cinemas Subscriber"
+        tvDrawerPhone.text = if (phone.isNotEmpty()) "Mobile: $phone" else "Mobile: Not Set"
+        tvDrawerEmail.text = if (email.isNotEmpty()) email else "user@cinemas.in"
+
+        findViewById<View>(R.id.drawerItemAll).setOnClickListener {
+            setFilter("all")
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        findViewById<View>(R.id.drawerItemMovies).setOnClickListener {
+            setFilter("movie")
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        findViewById<View>(R.id.drawerItemSeries).setOnClickListener {
+            setFilter("series")
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+        findViewById<View>(R.id.btnDrawerLogout).setOnClickListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
+            confirmLogout()
+        }
     }
 
     private fun setupListeners() {
-        findViewById<View>(R.id.btnLogout).setOnClickListener {
-            confirmLogout()
-        }
-
         findViewById<View>(R.id.btnRefresh).setOnClickListener {
             loadMedia()
         }
@@ -188,7 +228,6 @@ class MainActivity : AppCompatActivity() {
                                 duration = obj.optString("duration", ""),
                                 rating = obj.optString("rating", "8.5"),
                                 language = obj.optString("language", "Hindi"),
-                                genreName = obj.optString("genre_name", "Cinema"),
                                 totalSeasons = obj.optInt("total_seasons", 0),
                                 totalEpisodes = obj.optInt("total_episodes", 0)
                             )
@@ -215,7 +254,7 @@ class MainActivity : AppCompatActivity() {
 
             val matchesSearch = q.isEmpty() ||
                     item.title.lowercase().contains(q) ||
-                    item.genreName.lowercase().contains(q) ||
+                    item.description.lowercase().contains(q) ||
                     item.language.lowercase().contains(q)
 
             if (matchesFilter && matchesSearch) {
@@ -254,14 +293,25 @@ class MainActivity : AppCompatActivity() {
     private fun confirmLogout() {
         AlertDialog.Builder(this)
             .setTitle("Sign Out")
-            .setMessage("Do you want to sign out from Cinemas App?")
-            .setPositiveButton("Sign Out") { _, _ ->
+            .setMessage("Are you sure you want to log out from Cinemas?")
+            .setPositiveButton("Log Out") { _, _ ->
+                sessionManager.logout()
                 SessionManager.clearSession(this)
-                startActivity(Intent(this, AuthActivity::class.java))
+                val intent = Intent(this, AuthActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
                 finish()
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 }
 
@@ -271,12 +321,12 @@ class MediaAdapter(
 ) : RecyclerView.Adapter<MediaAdapter.MediaViewHolder>() {
 
     class MediaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val ivPoster: ImageView = v.findViewById(R.id.ivCourseThumbnail)
-        val tvTitle: TextView = v.findViewById(R.id.tvCourseTitle)
-        val tvDesc: TextView = v.findViewById(R.id.tvCourseDescription)
-        val tvBadge: TextView = v.findViewById(R.id.tvCourseCategory)
-        val tvStats: TextView = v.findViewById(R.id.tvCoursePrice)
-        val btnPlay: View = v.findViewById(R.id.btnOpenCourse)
+        val ivPoster: ImageView = v.findViewById(R.id.ivMediaPoster)
+        val tvTitle: TextView = v.findViewById(R.id.tvMediaTitle)
+        val tvDesc: TextView = v.findViewById(R.id.tvMediaDescription)
+        val tvBadge: TextView = v.findViewById(R.id.tvMediaTypeBadge)
+        val tvStats: TextView = v.findViewById(R.id.tvMediaMeta)
+        val btnPlay: View = v.findViewById(R.id.btnWatchMedia)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaViewHolder {
@@ -287,7 +337,8 @@ class MediaAdapter(
     override fun onBindViewHolder(holder: MediaViewHolder, position: Int) {
         val item = items[position]
         holder.tvTitle.text = item.title
-        holder.tvDesc.text = "${item.releaseYear} • ${item.genreName} • ★ ${item.rating}"
+        // No genre - clean cinema info
+        holder.tvDesc.text = "${item.releaseYear} • ${item.language} • ★ ${item.rating}"
         holder.tvBadge.text = item.type.uppercase()
         holder.tvStats.text = if (item.type == "series") "${item.totalSeasons} Seasons" else (if (item.duration.isNotEmpty()) item.duration else "Full Movie")
 

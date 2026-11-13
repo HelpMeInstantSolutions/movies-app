@@ -13,9 +13,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Chapter Header Row (Clickable to Toggle Expand/Collapse) -->
+        <!-- Season Header Row (Clickable to Toggle Expand/Collapse) -->
         <LinearLayout
-            android:id="@+id/chapterHeaderRow"
+            android:id="@+id/seasonHeaderRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -23,7 +23,7 @@
             android:gravity="center_vertical"
             android:background="?attr/selectableItemBackground">
 
-            <!-- Chapter Icon Pill -->
+            <!-- Season Icon Pill -->
             <RelativeLayout
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -35,10 +35,10 @@
                     android:layout_height="20dp"
                     android:layout_centerInParent="true"
                     android:src="@drawable/ic_folder"
-                    android:tint="#818CF8" />
+                    android:tint="#F43F5E" />
             </RelativeLayout>
 
-            <!-- Chapter Title & Info -->
+            <!-- Season Title & Info -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -46,56 +46,66 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvChapterTitle"
+                    android:id="@+id/tvSeasonTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Chapter Title"
+                    android:text="Season 1: Pilot"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvChapterInfo"
+                    android:id="@+id/tvSeasonInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="0 Lectures"
-                    android:textColor="#38BDF8"
+                    android:text="10 Episodes • HD 1080p"
+                    android:textColor="#94A3B8"
                     android:textSize="11sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="2dp" />
             </LinearLayout>
 
-            <!-- Expand / Collapse Arrow -->
+            <!-- Episodes Count Badge -->
+            <TextView
+                android:id="@+id/tvSeasonEpisodesBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 Episodes"
+                android:textColor="#38BDF8"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_glass_pill"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Chevron Icon -->
             <ImageView
-                android:id="@+id/ivExpandIndicator"
+                android:id="@+id/ivSeasonChevron"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_expand_more"
                 android:tint="#94A3B8" />
+
         </LinearLayout>
 
-        <!-- Collapsible Lectures List Section -->
-        <LinearLayout
-            android:id="@+id/layoutLessonsContainer"
+        <!-- Divider Line -->
+        <View
+            android:id="@+id/seasonDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#1E293B"
+            android:visibility="gone" />
+
+        <!-- Sub-List for Episodes inside this Season -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSeasonEpisodes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="12dp"
-            android:paddingBottom="12dp"
-            android:visibility="visible">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#1E293B"
-                android:layout_marginBottom="8dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvChapterLessons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
-        </LinearLayout>
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="10dp"
+            android:nestedScrollingEnabled="false"
+            android:visibility="gone" />
 
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

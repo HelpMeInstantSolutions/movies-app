@@ -1,225 +1,368 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#0B0F19">
 
-    <!-- Top App Bar -->
+    <!-- MAIN CONTENT VIEW -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="68dp"
-        android:background="#131B2E"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="18dp"
-        android:elevation="4dp">
-
-        <ImageView
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:src="@drawable/ic_cinema_logo"
-            android:layout_marginEnd="12dp" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvUserWelcome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cinemas &amp; Shows 🍿"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Watch Blockbuster Movies &amp; Web Series"
-                android:textColor="#94A3B8"
-                android:textSize="11sp" />
-        </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/btnLogout"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_logout"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="#EF4444"
-            android:contentDescription="Logout" />
-    </LinearLayout>
-
-    <!-- Search & Filter Area -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:background="#0B0F19">
 
-        <!-- Search Bar -->
+        <!-- Top App Bar -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/bg_input_field"
+            android:layout_height="64dp"
+            android:background="#131B2E"
             android:gravity="center_vertical"
-            android:paddingHorizontal="14dp">
+            android:paddingHorizontal="16dp"
+            android:elevation="4dp">
+
+            <!-- Hamburger Button (Left Sidebar Toggle) -->
+            <ImageButton
+                android:id="@+id/btnOpenDrawer"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_menu"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="#FFFFFF"
+                android:contentDescription="Menu" />
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_search"
-                android:tint="#64748B" />
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_cinema_logo"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="10dp" />
 
-            <EditText
-                android:id="@+id/etSearchCourses"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:hint="Search movies, series, or genres..."
-                android:textColorHint="#64748B"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cinemas"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp"
-                android:paddingStart="10dp"
-                android:imeOptions="actionSearch"
-                android:singleLine="true" />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.02" />
+
+            <ImageButton
+                android:id="@+id/btnRefresh"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_replay_10"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="#94A3B8"
+                android:contentDescription="Refresh" />
         </LinearLayout>
 
-        <!-- Category Tabs -->
+        <!-- Search & Filter Area -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Search Bar -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_input_field"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="14dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_search"
+                    android:tint="#64748B" />
+
+                <EditText
+                    android:id="@+id/etSearchMedia"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:hint="Search movies &amp; series..."
+                    android:textColorHint="#64748B"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:paddingStart="10dp"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <!-- Filter Tabs (All / Movies / Series) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:id="@+id/tvTabAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🍿 All Titles"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:background="@drawable/bg_tab_active"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/tvTabMovies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎬 Movies"
+                    android:textColor="#94A3B8"
+                    android:textSize="12sp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:background="@drawable/bg_tab_inactive"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/tvTabSeries"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📺 Web Series"
+                    android:textColor="#94A3B8"
+                    android:textSize="12sp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:background="@drawable/bg_tab_inactive" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Header Section with Title & Count -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="12dp">
+            android:paddingHorizontal="16dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/tvTabAll"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Featured Catalog"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvMediaCountBadge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🍿 All Titles"
-                android:textColor="#FFFFFF"
+                android:text="0 Titles"
+                android:textColor="#38BDF8"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="7dp"
-                android:background="@drawable/bg_tab_active"
-                android:layout_marginEnd="8dp" />
-
-            <TextView
-                android:id="@+id/tvTabPaid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="🎬 Movies"
-                android:textColor="#94A3B8"
-                android:textSize="12sp"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="7dp"
-                android:background="@drawable/bg_tab_inactive"
-                android:layout_marginEnd="8dp" />
-
-            <TextView
-                android:id="@+id/tvTabFree"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="📺 Series"
-                android:textColor="#94A3B8"
-                android:textSize="12sp"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="7dp"
-                android:background="@drawable/bg_tab_inactive" />
+                android:background="@drawable/bg_glass_pill"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp" />
         </LinearLayout>
-    </LinearLayout>
 
-    <!-- Header Section with Title & Count -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        android:layout_marginBottom="10dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <!-- Empty State Layout -->
+        <LinearLayout
+            android:id="@+id/layoutEmptyState"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="Featured Catalog"
-            android:textColor="#FFFFFF"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp"
+            android:visibility="gone">
 
-        <TextView
-            android:id="@+id/tvCourseCountBadge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0 Titles"
-            android:textColor="#38BDF8"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:background="@drawable/bg_glass_pill"
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/ic_play_arrow"
+                android:tint="#334155" />
+
+            <TextView
+                android:id="@+id/tvEmptyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No titles available yet"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Check back soon for new blockbuster movies and shows."
+                android:textColor="#64748B"
+                android:textSize="13sp"
+                android:layout_marginTop="6dp"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <!-- Recycler View for Movies & Series -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMedia"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:paddingHorizontal="10dp"
-            android:paddingVertical="4dp"
-            android:layout_marginEnd="8dp" />
+            android:paddingBottom="16dp"
+            android:clipToPadding="false" />
 
-        <ImageButton
-            android:id="@+id/btnRefresh"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_replay_10"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="#94A3B8"
-            android:contentDescription="Refresh" />
     </LinearLayout>
 
-    <!-- Empty State Layout -->
+    <!-- LEFT SIDEBAR / NAVIGATION DRAWER -->
     <LinearLayout
-        android:id="@+id/layoutEmptyState"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:id="@+id/navDrawer"
+        android:layout_width="290dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
         android:orientation="vertical"
-        android:gravity="center"
-        android:padding="32dp"
-        android:visibility="gone">
+        android:background="#0F172A"
+        android:clickable="true"
+        android:focusable="true">
 
-        <ImageView
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:src="@drawable/ic_play_arrow"
-            android:tint="#334155" />
-
-        <TextView
-            android:id="@+id/tvEmptyTitle"
-            android:layout_width="wrap_content"
+        <!-- User Profile Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No titles available yet"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:background="#1E293B">
 
-        <TextView
-            android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/ic_cinema_logo"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:id="@+id/tvDrawerUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cinemas Subscriber"
+                android:textColor="#FFFFFF"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDrawerUserPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mobile: N/A"
+                android:textColor="#F43F5E"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="3dp" />
+
+            <TextView
+                android:id="@+id/tvDrawerUserEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="user@cinemas.in"
+                android:textColor="#94A3B8"
+                android:textSize="11sp"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <!-- Navigation Menu Options -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/drawerItemAll"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:text="🍿  All Movies &amp; Shows"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:paddingHorizontal="14dp"
+                    android:background="@drawable/bg_tab_active" />
+
+                <TextView
+                    android:id="@+id/drawerItemMovies"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:text="🎬  Blockbuster Movies"
+                    android:textColor="#CBD5E1"
+                    android:textSize="14sp"
+                    android:paddingHorizontal="14dp"
+                    android:layout_marginTop="6dp" />
+
+                <TextView
+                    android:id="@+id/drawerItemSeries"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:text="📺  Web Series &amp; Shows"
+                    android:textColor="#CBD5E1"
+                    android:textSize="14sp"
+                    android:paddingHorizontal="14dp"
+                    android:layout_marginTop="6dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#334155"
+                    android:layout_marginVertical="16dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🔒 Private HD Streaming"
+                    android:textColor="#64748B"
+                    android:textSize="12sp"
+                    android:paddingHorizontal="14dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Anti-Piracy Protected Engine"
+                    android:textColor="#475569"
+                    android:textSize="11sp"
+                    android:paddingHorizontal="14dp"
+                    android:layout_marginTop="2dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Bottom Pinned Logout Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Check back soon for new movies and seasons."
-            android:textColor="#64748B"
-            android:textSize="13sp"
-            android:layout_marginTop="6dp"
-            android:textAlignment="center" />
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="#1E293B">
+
+            <Button
+                android:id="@+id/btnDrawerLogout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="🚪  Log Out"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:backgroundTint="#EF4444" />
+        </LinearLayout>
+
     </LinearLayout>
 
-    <!-- Recycler View for Movies & Series -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCourses"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingHorizontal="12dp"
-        android:paddingBottom="16dp"
-        android:clipToPadding="false" />
-
-</LinearLayout>
-
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -13,10 +13,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
@@ -41,14 +43,15 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
+import `in`.mybhiwani.cinemas.R
 
 class PlayerActivity : AppCompatActivity() {
 
-    // Native ExoPlayer (Media3 - Seamless multi-stream gapless playlist)
+    // Native ExoPlayer (Media3 - Seamless multi-stream gapless playback)
     private var exoPlayer: ExoPlayer? = null
     private lateinit var exoPlayerView: PlayerView
 
-    // Fallback WebView (Authenticated Dailymotion / External Streams)
+    // Fallback WebView (Authenticated Dailymotion / Cloud Streams)
     private lateinit var webView: WebView
 
     private lateinit var progressBar: ProgressBar
@@ -56,12 +59,13 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var playerTopBar: View
     private lateinit var playerMetaSection: View
     private lateinit var playlistHeaderSection: View
-    private lateinit var rvLessons: RecyclerView
+    private lateinit var rvStreamsList: RecyclerView
 
-    private lateinit var tvPlayerCourseTitle: TextView
-    private lateinit var tvPlayerLessonCounter: TextView
-    private lateinit var tvCurrentLesson: TextView
+    private lateinit var tvPlayerMediaTitle: TextView
+    private lateinit var tvPlayerStreamCounter: TextView
+    private lateinit var tvCurrentStreamTitle: TextView
     private lateinit var tvPlaylistCount: TextView
+    private lateinit var btnNextStream: Button
 
     private lateinit var btnSpeedToggle: TextView
     private lateinit var btnLockToggle: ImageButton
@@ -71,17 +75,18 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var seekLeftBubble: View
     private lateinit var seekRightBubble: View
 
-    private lateinit var lessonAdapter: LessonAdapter
-    private val lessons = mutableListOf<VideoLesson>()
+    private lateinit var episodeAdapter: EpisodeAdapter
+    private val streamsList = mutableListOf<MediaEpisode>()
 
-    private var courseId: Int = 1
-    private var courseTitle: String = "Movie Stream"
+    private var mediaId: Int = 1
+    private var mediaTitle: String = "Cinema Stream"
+    private var mediaType: String = "movie"
     private var initialVideoId: Int = 0
-    private var currentLessonIndex: Int = 0
+    private var currentStreamIndex: Int = 0
     private var currentSpeed: Double = 1.0
     private var isFullscreen: Boolean = false
     private var isScreenLocked: Boolean = false
-    private var isMovieMode: Boolean = false
+    private var isMovieMode: Boolean = true
 
     private lateinit var gestureDetector: GestureDetector
     private val hideHandler = Handler(Looper.getMainLooper())
@@ -98,9 +103,11 @@ class PlayerActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_player)
 
-        courseId = intent.getIntExtra("COURSE_ID", 1)
-        courseTitle = intent.getStringExtra("COURSE_TITLE") ?: "Cinemas Stream"
-        initialVideoId = intent.getIntExtra("LESSON_ID", 0)
+        mediaId = intent.getIntExtra("MEDIA_ID", intent.getIntExtra("COURSE_ID", 1))
+        mediaTitle = intent.getStringExtra("MEDIA_TITLE") ?: (intent.getStringExtra("COURSE_TITLE") ?: "Cinemas Stream")
+        mediaType = intent.getStringExtra("MEDIA_TYPE") ?: "movie"
+        isMovieMode = (mediaType == "movie")
+        initialVideoId = intent.getIntExtra("EPISODE_ID", intent.getIntExtra("LESSON_ID", 0))
 
         initViews()
         setupExoPlayer()
@@ -117,12 +124,13 @@ class PlayerActivity : AppCompatActivity() {
         playerTopBar = findViewById(R.id.playerTopBar)
         playerMetaSection = findViewById(R.id.playerMetaSection)
         playlistHeaderSection = findViewById(R.id.playlistHeaderSection)
-        rvLessons = findViewById(R.id.rvLessonList)
+        rvStreamsList = findViewById(R.id.rvStreamsList)
 
-        tvPlayerCourseTitle = findViewById(R.id.tvPlayerCourseTitle)
-        tvPlayerLessonCounter = findViewById(R.id.tvPlayerLessonCounter)
-        tvCurrentLesson = findViewById(R.id.tvCurrentLesson)
+        tvPlayerMediaTitle = findViewById(R.id.tvPlayerMediaTitle)
+        tvPlayerStreamCounter = findViewById(R.id.tvPlayerStreamCounter)
+        tvCurrentStreamTitle = findViewById(R.id.tvCurrentStreamTitle)
         tvPlaylistCount = findViewById(R.id.tvPlaylistCount)
+        btnNextStream = findViewById(R.id.btnNextStream)
 
         btnSpeedToggle = findViewById(R.id.btnSpeedToggle)
         btnLockToggle = findViewById(R.id.btnLockToggle)
@@ -132,13 +140,21 @@ class PlayerActivity : AppCompatActivity() {
         seekLeftBubble = findViewById(R.id.seekLeftBubble)
         seekRightBubble = findViewById(R.id.seekRightBubble)
 
-        tvPlayerCourseTitle.text = courseTitle
+        tvPlayerMediaTitle.text = mediaTitle
+        tvCurrentStreamTitle.text = mediaTitle
+        tvPlayerStreamCounter.text = if (isMovieMode) "Full Feature Film" else "Loading streams..."
 
-        rvLessons.layoutManager = LinearLayoutManager(this)
-        lessonAdapter = LessonAdapter(lessons, initialVideoId) { selected ->
-            playVideo(selected)
+        if (isMovieMode) {
+            playlistHeaderSection.visibility = View.GONE
+            rvStreamsList.visibility = View.GONE
+            btnNextStream.visibility = View.GONE
         }
-        rvLessons.adapter = lessonAdapter
+
+        rvStreamsList.layoutManager = LinearLayoutManager(this)
+        episodeAdapter = EpisodeAdapter(streamsList, initialVideoId) { selected ->
+            playStream(selected)
+        }
+        rvStreamsList.adapter = episodeAdapter
 
         setupWebView()
     }
@@ -161,8 +177,8 @@ class PlayerActivity : AppCompatActivity() {
                     Player.STATE_READY -> progressBar.visibility = View.GONE
                     Player.STATE_ENDED -> {
                         progressBar.visibility = View.GONE
-                        // Auto play seamless next segment / episode
-                        playNextVideo()
+                        // Seamless auto-play next link/part (User does not feel it's 2 separate videos)
+                        playNextStream()
                     }
                     Player.STATE_IDLE -> {}
                 }
@@ -170,20 +186,20 @@ class PlayerActivity : AppCompatActivity() {
 
             override fun onPlayerError(error: PlaybackException) {
                 progressBar.visibility = View.GONE
-                if (lessons.isNotEmpty() && currentLessonIndex < lessons.size) {
-                    loadInWebView(lessons[currentLessonIndex].dailymotionId)
+                if (streamsList.isNotEmpty() && currentStreamIndex < streamsList.size) {
+                    loadInWebView(streamsList[currentStreamIndex].dailymotionId)
                 }
             }
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                 super.onMediaItemTransition(mediaItem, reason)
                 val newIndex = exoPlayer?.currentMediaItemIndex ?: 0
-                if (newIndex in lessons.indices && newIndex != currentLessonIndex) {
-                    currentLessonIndex = newIndex
-                    val lesson = lessons[newIndex]
-                    lessonAdapter.updateCurrentVideoId(lesson.id)
-                    tvCurrentLesson.text = if (isMovieMode) courseTitle else lesson.title
-                    tvPlayerLessonCounter.text = if (isMovieMode) "Full Feature Film" else "Stream ${currentLessonIndex + 1} of ${lessons.size}"
+                if (newIndex in streamsList.indices && newIndex != currentStreamIndex) {
+                    currentStreamIndex = newIndex
+                    val ep = streamsList[newIndex]
+                    episodeAdapter.updateCurrentVideoId(ep.id)
+                    tvCurrentStreamTitle.text = if (isMovieMode) mediaTitle else ep.title
+                    tvPlayerStreamCounter.text = if (isMovieMode) "Full Feature Film" else "Stream ${currentStreamIndex + 1} of ${streamsList.size}"
                 }
             }
         })
@@ -200,6 +216,9 @@ class PlayerActivity : AppCompatActivity() {
         s.useWideViewPort = true
         s.cacheMode = WebSettings.LOAD_DEFAULT
 
+        // JavaScript Interface so Dailymotion ended event triggers seamless next part in Android
+        webView.addJavascriptInterface(WebAppInterface(), "AndroidBridge")
+
         webView.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView?, newProgress: Int) {
                 if (newProgress >= 90) progressBar.visibility = View.GONE
@@ -209,6 +228,16 @@ class PlayerActivity : AppCompatActivity() {
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 progressBar.visibility = View.GONE
+            }
+        }
+    }
+
+    inner class WebAppInterface {
+        @JavascriptInterface
+        fun onVideoEnded() {
+            runOnUiThread {
+                // Seamlessly advance to Part 2 / next stream
+                playNextStream()
             }
         }
     }
@@ -264,8 +293,8 @@ class PlayerActivity : AppCompatActivity() {
             unlockScreen()
         }
 
-        findViewById<View>(R.id.btnNextLesson).setOnClickListener {
-            playNextVideo()
+        btnNextStream.setOnClickListener {
+            playNextStream()
         }
     }
 
@@ -299,13 +328,14 @@ class PlayerActivity : AppCompatActivity() {
         playerTopBar.visibility = View.GONE
         playerMetaSection.visibility = View.GONE
         playlistHeaderSection.visibility = View.GONE
-        rvLessons.visibility = View.GONE
+        rvStreamsList.visibility = View.GONE
 
         val params = videoContainer.layoutParams
         params.width = ViewGroup.LayoutParams.MATCH_PARENT
         params.height = ViewGroup.LayoutParams.MATCH_PARENT
         videoContainer.layoutParams = params
 
+        @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility = (
                 View.SYSTEM_UI_FLAG_FULLSCREEN
                         or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -319,11 +349,11 @@ class PlayerActivity : AppCompatActivity() {
 
         if (!isMovieMode) {
             playlistHeaderSection.visibility = View.VISIBLE
-            rvLessons.visibility = View.VISIBLE
+            rvStreamsList.visibility = View.VISIBLE
         }
 
         val height = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP, 220f, resources.displayMetrics
+            TypedValue.COMPLEX_UNIT_DIP, 225f, resources.displayMetrics
         ).toInt()
 
         val params = videoContainer.layoutParams
@@ -331,6 +361,7 @@ class PlayerActivity : AppCompatActivity() {
         params.height = height
         videoContainer.layoutParams = params
 
+        @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
     }
 
@@ -366,18 +397,20 @@ class PlayerActivity : AppCompatActivity() {
 
     /**
      * Seamless multi-link gapless playback:
-     * If movie has multiple parts/links, they are concatenated in ExoPlayer queue seamlessly.
+     * If a movie has multiple parts/links, they are played continuously one after another.
+     * The user is shown ONLY the movie title - never "Part 1" or "Part 2" so they feel it's 1 movie!
      */
-    private fun playVideo(lesson: VideoLesson) {
-        currentLessonIndex = lessons.indexOfFirst { it.id == lesson.id }.coerceAtLeast(0)
-        lessonAdapter.updateCurrentVideoId(lesson.id)
+    private fun playStream(episode: MediaEpisode) {
+        currentStreamIndex = streamsList.indexOfFirst { it.id == episode.id }.coerceAtLeast(0)
+        episodeAdapter.updateCurrentVideoId(episode.id)
 
-        tvCurrentLesson.text = if (isMovieMode) courseTitle else lesson.title
-        tvPlayerLessonCounter.text = if (isMovieMode) "Full Feature Film" else "Stream ${currentLessonIndex + 1} of ${lessons.size}"
+        // For movie mode: Always keep Movie Title!
+        tvCurrentStreamTitle.text = if (isMovieMode) mediaTitle else episode.title
+        tvPlayerStreamCounter.text = if (isMovieMode) "Full Feature Film" else "Stream ${currentStreamIndex + 1} of ${streamsList.size}"
 
         progressBar.visibility = View.VISIBLE
 
-        val rawId = lesson.dailymotionId.trim()
+        val rawId = episode.dailymotionId.trim()
 
         if (rawId.startsWith("http") && (rawId.contains(".m3u8") || rawId.contains(".mp4") || rawId.contains(".webm"))) {
             playDirectUrl(rawId)
@@ -464,7 +497,19 @@ class PlayerActivity : AppCompatActivity() {
                 </style>
             </head>
             <body>
-                <iframe src="$playerUrl" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                <iframe id="dmp" src="$playerUrl" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                <script>
+                    window.addEventListener('message', function(e) {
+                        try {
+                            var data = (typeof e.data === 'string') ? JSON.parse(e.data) : e.data;
+                            if (data && (data.event === 'ended' || data.event === 'video_end')) {
+                                if (window.AndroidBridge && window.AndroidBridge.onVideoEnded) {
+                                    window.AndroidBridge.onVideoEnded();
+                                }
+                            }
+                        } catch(err){}
+                    });
+                </script>
             </body>
             </html>
         """.trimIndent()
@@ -472,18 +517,22 @@ class PlayerActivity : AppCompatActivity() {
         webView.loadDataWithBaseURL("https://cinemas.mybhiwani.in/", playerHtml, "text/html", "UTF-8", null)
     }
 
-    private fun playNextVideo() {
-        if (currentLessonIndex + 1 < lessons.size) {
-            playVideo(lessons[currentLessonIndex + 1])
+    private fun playNextStream() {
+        if (currentStreamIndex + 1 < streamsList.size) {
+            playStream(streamsList[currentStreamIndex + 1])
+        } else {
+            if (isMovieMode) {
+                Snackbar.make(videoContainer, "Movie Completed", Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun loadPlaylist() {
         lifecycleScope.launch {
             try {
-                val cId = courseId
+                val mId = mediaId
                 val result = withContext(Dispatchers.IO) {
-                    val conn = URL("https://cinemas.mybhiwani.in/api/courses.php?action=detail&id=$cId").openConnection() as HttpURLConnection
+                    val conn = URL("https://cinemas.mybhiwani.in/api/movies.php?action=detail&id=$mId").openConnection() as HttpURLConnection
                     conn.connectTimeout = 6000
                     conn.readTimeout = 6000
                     conn.inputStream.bufferedReader().use { it.readText() }
@@ -492,27 +541,31 @@ class PlayerActivity : AppCompatActivity() {
                 val json = JSONObject(result)
                 if (json.optBoolean("status", false)) {
                     val data = json.getJSONObject("data")
-                    val mediaType = data.optString("type", "movie")
-                    isMovieMode = (mediaType == "movie")
+                    val mType = data.optString("type", mediaType)
+                    isMovieMode = (mType == "movie")
 
-                    val chaptersArr = data.optJSONArray("seasons") ?: data.optJSONArray("chapters")
+                    val seasonsArr = data.optJSONArray("seasons") ?: data.optJSONArray("chapters")
 
-                    lessons.clear()
-                    if (chaptersArr != null) {
-                        for (i in 0 until chaptersArr.length()) {
-                            val cObj = chaptersArr.getJSONObject(i)
-                            val vArr = cObj.optJSONArray("episodes") ?: cObj.optJSONArray("videos")
-                            if (vArr != null) {
-                                for (j in 0 until vArr.length()) {
-                                    val vObj = vArr.getJSONObject(j)
-                                    lessons.add(
-                                        VideoLesson(
-                                            id = vObj.optInt("id", 0),
-                                            title = vObj.optString("title", "Episode ${j + 1}"),
-                                            description = vObj.optString("description", ""),
-                                            dailymotionId = vObj.optString("dailymotion_id", ""),
-                                            duration = vObj.optString("duration", "45:00"),
-                                            sortOrder = vObj.optInt("sort_order", j + 1),
+                    streamsList.clear()
+                    if (seasonsArr != null) {
+                        for (i in 0 until seasonsArr.length()) {
+                            val sObj = seasonsArr.getJSONObject(i)
+                            val epArr = sObj.optJSONArray("episodes") ?: sObj.optJSONArray("videos")
+                            if (epArr != null) {
+                                for (j in 0 until epArr.length()) {
+                                    val epObj = epArr.getJSONObject(j)
+                                    streamsList.add(
+                                        MediaEpisode(
+                                            id = epObj.optInt("id", 0),
+                                            seriesId = mediaId,
+                                            seasonId = sObj.optInt("id", 1),
+                                            seasonTitle = sObj.optString("title", "Main Feature"),
+                                            title = epObj.optString("title", "Episode ${j + 1}"),
+                                            description = epObj.optString("description", ""),
+                                            dailymotionId = epObj.optString("dailymotion_id", ""),
+                                            duration = epObj.optString("duration", "45:00"),
+                                            episodeNumber = epObj.optInt("episode_number", j + 1),
+                                            sortOrder = epObj.optInt("sort_order", j + 1),
                                             isFreePreview = true
                                         )
                                     )
@@ -524,26 +577,29 @@ class PlayerActivity : AppCompatActivity() {
                     // For Movie with multiple links: Seamlessly hide playlist list so user feels it's 1 single movie
                     if (isMovieMode) {
                         playlistHeaderSection.visibility = View.GONE
-                        rvLessons.visibility = View.GONE
-                        tvPlayerLessonCounter.text = "Full Feature Film"
+                        rvStreamsList.visibility = View.GONE
+                        btnNextStream.visibility = View.GONE
+                        tvPlayerStreamCounter.text = "Full Feature Film"
+                        tvCurrentStreamTitle.text = mediaTitle
                     } else {
                         playlistHeaderSection.visibility = View.VISIBLE
-                        rvLessons.visibility = View.VISIBLE
-                        tvPlaylistCount.text = "${lessons.size} Available"
+                        rvStreamsList.visibility = View.VISIBLE
+                        btnNextStream.visibility = View.VISIBLE
+                        tvPlaylistCount.text = "${streamsList.size} Episodes"
                     }
 
-                    lessonAdapter.notifyDataSetChanged()
+                    episodeAdapter.notifyDataSetChanged()
 
                     val target = if (initialVideoId > 0) {
-                        lessons.find { it.id == initialVideoId } ?: lessons.firstOrNull()
+                        streamsList.find { it.id == initialVideoId } ?: streamsList.firstOrNull()
                     } else {
-                        lessons.firstOrNull()
+                        streamsList.firstOrNull()
                     }
 
-                    target?.let { playVideo(it) }
+                    target?.let { playStream(it) }
                 }
             } catch (e: Exception) {
-                Snackbar.make(videoContainer, "Could not load media streams", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(videoContainer, "Could not load streams", Snackbar.LENGTH_SHORT).show()
             }
         }
     }

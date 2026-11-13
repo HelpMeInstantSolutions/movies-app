@@ -41,6 +41,9 @@
             android:name="in.mybhiwani.cinemas.MainActivity"
             android:exported="false" />
         <activity
+            android:name="in.mybhiwani.cinemas.MediaDetailActivity"
+            android:exported="false" />
+        <activity
             android:name="in.mybhiwani.cinemas.ChaptersActivity"
             android:exported="false" />
         <activity

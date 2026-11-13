@@ -6,49 +6,49 @@
     android:orientation="vertical"
     android:background="#0B0F19">
 
-    <!-- Top App Bar with Back Navigation -->
+    <!-- Top Action Bar -->
     <RelativeLayout
-        android:id="@+id/chaptersTopBar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="56dp"
+        android:background="#131B2E"
         android:paddingHorizontal="16dp"
-        android:background="#131B2E">
+        android:elevation="4dp">
 
         <ImageButton
-            android:id="@+id/btnBackFromChapters"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:id="@+id/btnBackFromDetails"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:layout_centerVertical="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
             android:tint="#FFFFFF"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Back" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/btnBackFromChapters"
-            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@id/btnBackFromDetails"
+            android:layout_marginStart="14dp"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvTopCourseTitle"
+                android:id="@+id/tvTopMediaTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Course Curriculum"
+                android:text="Cinema Showcase"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:maxLines="1"
                 android:ellipsize="end" />
 
             <TextView
-                android:id="@+id/tvTopCourseSubtitle"
+                android:id="@+id/tvTopMediaSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chapters &amp; Lectures"
-                android:textColor="#38BDF8"
+                android:text="Seasons &amp; Episodes"
+                android:textColor="#F43F5E"
                 android:textSize="11sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -66,7 +66,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Course Header Card -->
+            <!-- Movie / Series Header Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,139 +87,158 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tvHeaderCourseTitle"
+                            android:id="@+id/tvHeaderMediaTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Course Title"
+                            android:text="Movie Title"
                             android:textColor="#FFFFFF"
                             android:textSize="18sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tvHeaderCourseDesc"
+                            android:id="@+id/tvHeaderMediaDesc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:text="Complete structured syllabus covering all concepts and previous exam problems."
+                            android:text="Experience high quality cinema streaming directly on your mobile device."
                             android:textColor="#94A3B8"
                             android:textSize="12sp"
+                            android:layout_marginTop="6dp"
                             android:lineSpacingExtra="2dp" />
-                    </LinearLayout>
 
-                    <!-- Meta Badges & Start Button Row -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:id="@+id/tvCurriculumStats"
-                            android:layout_width="0dp"
+                        <!-- Media Stats Pill -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="0 Chapters • 0 Lessons"
-                            android:textColor="#38BDF8"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:orientation="horizontal"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center_vertical">
 
-                        <Button
-                            android:id="@+id/btnStartLearning"
-                            android:layout_width="wrap_content"
-                            android:layout_height="38dp"
-                            android:background="@drawable/bg_gradient_brand"
-                            android:text="Start Course ▶"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:textAllCaps="false"
-                            android:paddingHorizontal="16dp" />
+                            <TextView
+                                android:id="@+id/tvMediaStats"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="HD 1080p • Dolby Atmos Audio"
+                                android:textColor="#38BDF8"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:background="@drawable/bg_glass_pill"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="4dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🔥 STREAM READY"
+                                android:textColor="#10B981"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:layout_marginStart="8dp" />
+                        </LinearLayout>
                     </LinearLayout>
+
+                    <!-- Big Watch Button -->
+                    <Button
+                        android:id="@+id/btnStartStreaming"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:text="Play Movie Now ▶"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/bg_gradient_brand"
+                        android:layout_marginTop="18dp" />
+
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
-            <!-- Section Title -->
+            <!-- Loading Spinner -->
+            <ProgressBar
+                android:id="@+id/mediaDetailLoader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:indeterminateTint="#F43F5E"
+                android:visibility="gone"
+                android:layout_marginVertical="24dp" />
+
+            <!-- Series Section Header (Seasons List) -->
             <LinearLayout
+                android:id="@+id/seriesSectionHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
 
                 <TextView
+                    android:id="@+id/tvSeriesSectionTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Course Chapters"
+                    android:text="Seasons &amp; Episodes"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvChapterCountPill"
+                    android:id="@+id/tvSeasonCountPill"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="0 Seasons"
+                    android:textColor="#38BDF8"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
                     android:background="@drawable/bg_glass_pill"
                     android:paddingHorizontal="10dp"
-                    android:paddingVertical="4dp"
-                    android:text="0 Chapters"
-                    android:textColor="#818CF8"
-                    android:textSize="11sp"
-                    android:textStyle="bold" />
+                    android:paddingVertical="4dp" />
             </LinearLayout>
 
-            <!-- Loading Spinner -->
-            <ProgressBar
-                android:id="@+id/chaptersLoader"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="32dp"
-                android:indeterminateTint="#6366F1" />
+            <!-- Recycler View for Seasons & Episodes (for Web Series) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSeasons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:visibility="visible" />
 
-            <!-- Empty State -->
+            <!-- Empty State for Series with no episodes -->
             <LinearLayout
-                android:id="@+id/layoutEmptyChapters"
+                android:id="@+id/layoutEmptyMedia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:layout_marginTop="40dp"
+                android:padding="32dp"
                 android:visibility="gone">
 
                 <ImageView
                     android:layout_width="56dp"
                     android:layout_height="56dp"
-                    android:src="@drawable/ic_folder"
-                    android:tint="#475569" />
+                    android:src="@drawable/ic_play_arrow"
+                    android:tint="#334155" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="No chapters or lessons uploaded yet"
+                    android:text="No streams added yet"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Episodes for this title will be available soon."
                     android:textColor="#64748B"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:layout_marginTop="4dp"
-                    android:text="New lectures will appear here once added by the faculty"
-                    android:textColor="#475569"
-                    android:textSize="11sp" />
+                    android:textAlignment="center" />
             </LinearLayout>
 
-            <!-- Chapters List -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvChapters"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
-
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

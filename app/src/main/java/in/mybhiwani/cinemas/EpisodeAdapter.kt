@@ -21,12 +21,12 @@ class EpisodeAdapter(
     }
 
     class EpisodeVH(v: View) : RecyclerView.ViewHolder(v) {
-        val root: View = v.findViewById(R.id.layoutLessonItem)
-        val tvNumber: TextView = v.findViewById(R.id.tvLessonNum)
-        val tvTitle: TextView = v.findViewById(R.id.tvLessonTitle)
-        val tvDuration: TextView = v.findViewById(R.id.tvLessonDuration)
-        val tvBadge: TextView = v.findViewById(R.id.tvLessonBadge)
-        val iconPlay: ImageView = v.findViewById(R.id.icPlayStatus)
+        val root: View = v.findViewById(R.id.layoutEpisodeItem)
+        val tvNumber: TextView = v.findViewById(R.id.tvEpisodeNum)
+        val tvTitle: TextView = v.findViewById(R.id.tvEpisodeTitle)
+        val tvDuration: TextView = v.findViewById(R.id.tvEpisodeDuration)
+        val tvBadge: TextView = v.findViewById(R.id.tvEpisodeBadge)
+        val iconPlay: ImageView = v.findViewById(R.id.ivEpisodePlay)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeVH {
@@ -55,7 +55,7 @@ class EpisodeAdapter(
             holder.iconPlay.setColorFilter(Color.parseColor("#64748B"))
         }
 
-        holder.tvBadge.text = "• Stream"
+        holder.tvBadge.text = "HD STREAM"
         holder.tvBadge.setTextColor(Color.parseColor("#10B981"))
 
         holder.root.setOnClickListener {
@@ -65,5 +65,5 @@ class EpisodeAdapter(
     }
 }
 
-// Legacy alias
+// Legacy alias for backwards compatibility
 typealias LessonAdapter = EpisodeAdapter

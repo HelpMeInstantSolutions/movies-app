@@ -16,12 +16,13 @@ class SeasonAdapter(
 ) : RecyclerView.Adapter<SeasonAdapter.SeasonViewHolder>() {
 
     class SeasonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val chapterHeaderRow: LinearLayout = itemView.findViewById(R.id.chapterHeaderRow)
-        val tvChapterTitle: TextView = itemView.findViewById(R.id.tvChapterTitle)
-        val tvChapterInfo: TextView = itemView.findViewById(R.id.tvChapterInfo)
-        val ivExpandIndicator: ImageView = itemView.findViewById(R.id.ivExpandIndicator)
-        val layoutLessonsContainer: LinearLayout = itemView.findViewById(R.id.layoutLessonsContainer)
-        val rvChapterLessons: RecyclerView = itemView.findViewById(R.id.rvChapterLessons)
+        val seasonHeaderRow: LinearLayout = itemView.findViewById(R.id.seasonHeaderRow)
+        val tvSeasonTitle: TextView = itemView.findViewById(R.id.tvSeasonTitle)
+        val tvSeasonInfo: TextView = itemView.findViewById(R.id.tvSeasonInfo)
+        val tvSeasonEpisodesBadge: TextView = itemView.findViewById(R.id.tvSeasonEpisodesBadge)
+        val ivSeasonChevron: ImageView = itemView.findViewById(R.id.ivSeasonChevron)
+        val seasonDivider: View = itemView.findViewById(R.id.seasonDivider)
+        val rvSeasonEpisodes: RecyclerView = itemView.findViewById(R.id.rvSeasonEpisodes)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeasonViewHolder {
@@ -32,18 +33,19 @@ class SeasonAdapter(
     override fun onBindViewHolder(holder: SeasonViewHolder, position: Int) {
         val season = seasons[position]
 
-        holder.tvChapterTitle.text = season.title
-        holder.tvChapterInfo.text = "${season.episodes.size} Episodes"
+        holder.tvSeasonTitle.text = season.title
+        holder.tvSeasonInfo.text = "${season.episodes.size} Episodes • HD 1080p"
+        holder.tvSeasonEpisodesBadge.text = "${season.episodes.size} Episodes"
 
-        holder.rvChapterLessons.layoutManager = LinearLayoutManager(holder.itemView.context)
+        holder.rvSeasonEpisodes.layoutManager = LinearLayoutManager(holder.itemView.context)
         val episodeAdapter = EpisodeAdapter(season.episodes) { ep ->
             onEpisodeClicked(ep)
         }
-        holder.rvChapterLessons.adapter = episodeAdapter
+        holder.rvSeasonEpisodes.adapter = episodeAdapter
 
         updateExpandState(holder, season.isExpanded)
 
-        holder.chapterHeaderRow.setOnClickListener {
+        holder.seasonHeaderRow.setOnClickListener {
             season.isExpanded = !season.isExpanded
             updateExpandState(holder, season.isExpanded)
         }
@@ -51,16 +53,18 @@ class SeasonAdapter(
 
     private fun updateExpandState(holder: SeasonViewHolder, isExpanded: Boolean) {
         if (isExpanded) {
-            holder.layoutLessonsContainer.visibility = View.VISIBLE
-            holder.ivExpandIndicator.setImageResource(R.drawable.ic_expand_less)
+            holder.rvSeasonEpisodes.visibility = View.VISIBLE
+            holder.seasonDivider.visibility = View.VISIBLE
+            holder.ivSeasonChevron.setImageResource(R.drawable.ic_expand_less)
         } else {
-            holder.layoutLessonsContainer.visibility = View.GONE
-            holder.ivExpandIndicator.setImageResource(R.drawable.ic_expand_more)
+            holder.rvSeasonEpisodes.visibility = View.GONE
+            holder.seasonDivider.visibility = View.GONE
+            holder.ivSeasonChevron.setImageResource(R.drawable.ic_expand_more)
         }
     }
 
     override fun getItemCount(): Int = seasons.size
 }
 
-// Legacy alias
+// Legacy alias for backwards compatibility
 typealias ChapterAdapter = SeasonAdapter

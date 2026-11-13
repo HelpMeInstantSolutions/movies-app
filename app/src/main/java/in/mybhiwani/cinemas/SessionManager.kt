@@ -11,6 +11,7 @@ class SessionManager(context: Context) {
         private const val KEY_USER_ID = "user_id"
         private const val KEY_USER_NAME = "user_name"
         private const val KEY_USER_EMAIL = "user_email"
+        private const val KEY_USER_PHONE = "user_phone"
 
         fun getUserName(context: Context): String {
             val sp = context.getSharedPreferences("CinemasUserSession", Context.MODE_PRIVATE)
@@ -23,12 +24,13 @@ class SessionManager(context: Context) {
         }
     }
 
-    fun saveUserSession(id: Int, name: String, email: String) {
+    fun saveUserSession(id: Int, name: String, email: String, phone: String = "") {
         prefs.edit().apply {
             putBoolean(KEY_IS_LOGGED_IN, true)
             putInt(KEY_USER_ID, id)
             putString(KEY_USER_NAME, name)
             putString(KEY_USER_EMAIL, email)
+            putString(KEY_USER_PHONE, phone)
             apply()
         }
     }
@@ -38,6 +40,8 @@ class SessionManager(context: Context) {
     fun getUserName(): String = prefs.getString(KEY_USER_NAME, "Movie Buff") ?: "Movie Buff"
 
     fun getUserEmail(): String = prefs.getString(KEY_USER_EMAIL, "") ?: ""
+
+    fun getUserPhone(): String = prefs.getString(KEY_USER_PHONE, "") ?: ""
 
     fun logout() {
         prefs.edit().clear().apply()

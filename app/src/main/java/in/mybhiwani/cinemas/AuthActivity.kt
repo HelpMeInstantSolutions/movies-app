@@ -31,7 +31,9 @@ class AuthActivity : AppCompatActivity() {
     private lateinit var tvTitle: TextView
     private lateinit var tvSubtitle: TextView
     private lateinit var containerName: View
+    private lateinit var containerPhone: View
     private lateinit var etName: EditText
+    private lateinit var etPhone: EditText
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
     private lateinit var btnSubmit: Button
@@ -41,7 +43,7 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         sessionManager = SessionManager(this)
-        // If already logged in, navigate straight to courses
+        // If already logged in, navigate straight to main catalog
         if (sessionManager.isLoggedIn()) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
@@ -55,7 +57,9 @@ class AuthActivity : AppCompatActivity() {
         tvTitle = findViewById(R.id.tvAuthTitle)
         tvSubtitle = findViewById(R.id.tvAuthSubtitle)
         containerName = findViewById(R.id.containerName)
+        containerPhone = findViewById(R.id.containerPhone)
         etName = findViewById(R.id.etName)
+        etPhone = findViewById(R.id.etPhone)
         etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
         btnSubmit = findViewById(R.id.btnSubmitAuth)
@@ -96,6 +100,8 @@ class AuthActivity : AppCompatActivity() {
             tvTitle.text = "Create Cinemas Account 🍿"
             tvSubtitle.text = "Register to watch private high-definition movies & web series"
             containerName.visibility = View.VISIBLE
+            containerPhone.visibility = View.VISIBLE
+            etEmail.hint = "Email Address"
             btnSubmit.text = "Create Account & Start Watching"
             tvToggle.text = "Already registered? Sign In here"
         } else {
@@ -108,24 +114,33 @@ class AuthActivity : AppCompatActivity() {
             tvTitle.text = "Welcome Back 🎬"
             tvSubtitle.text = "Sign in to access your personal cinema watch list"
             containerName.visibility = View.GONE
+            containerPhone.visibility = View.GONE
+            etEmail.hint = "Email or 10-Digit Mobile"
             btnSubmit.text = "Sign In to Watch"
             tvToggle.text = "New to Cinemas? Create an account"
         }
     }
 
     private fun handleAuth() {
-        val email = etEmail.text.toString().trim()
+        val emailOrPhone = etEmail.text.toString().trim()
         val password = etPassword.text.toString().trim()
         val name = etName.text.toString().trim()
+        val phone = etPhone.text.toString().trim()
 
-        if (email.isEmpty() || password.isEmpty()) {
-            showSnackbar("Please enter both email and password")
+        if (emailOrPhone.isEmpty() || password.isEmpty()) {
+            showSnackbar("Please enter your credentials")
             return
         }
 
-        if (isRegisterMode && name.isEmpty()) {
-            showSnackbar("Please enter your full name")
-            return
+        if (isRegisterMode) {
+            if (name.isEmpty()) {
+                showSnackbar("Please enter your full name")
+                return
+            }
+            if (phone.length != 10 || !phone.all { it.isDigit() }) {
+                showSnackbar("Please enter a valid 10-digit mobile number")
+                return
+            }
         }
 
         btnSubmit.isEnabled = false
@@ -138,9 +153,12 @@ class AuthActivity : AppCompatActivity() {
         }
 
         val jsonBody = JSONObject().apply {
-            put("email", email)
+            put("email", emailOrPhone)
             put("password", password)
-            if (isRegisterMode) put("name", name)
+            if (isRegisterMode) {
+                put("name", name)
+                put("phone", phone)
+            }
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
@@ -169,14 +187,15 @@ class AuthActivity : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     btnSubmit.isEnabled = true
-                    btnSubmit.text = if (isRegisterMode) "Create Account & Start Learning" else "Sign In to Account"
+                    btnSubmit.text = if (isRegisterMode) "Create Account & Start Watching" else "Sign In to Watch"
 
                     if (isSuccess) {
                         val userObj = resJson.getJSONObject("data")
                         sessionManager.saveUserSession(
                             id = userObj.getInt("id"),
                             name = userObj.getString("name"),
-                            email = userObj.getString("email")
+                            email = userObj.getString("email"),
+                            phone = userObj.optString("phone", "")
                         )
 
                         showSnackbar("Welcome, ${userObj.getString("name")}! 🎉")
@@ -189,7 +208,7 @@ class AuthActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     btnSubmit.isEnabled = true
-                    btnSubmit.text = if (isRegisterMode) "Create Account & Start Learning" else "Sign In to Account"
+                    btnSubmit.text = if (isRegisterMode) "Create Account & Start Watching" else "Sign In to Watch"
                     showSnackbar("Network error: ${e.localizedMessage}")
                 }
             }
