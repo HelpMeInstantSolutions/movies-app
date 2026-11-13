@@ -1,4 +1,4 @@
-package `in`.mybhiwani.courseapp
+﻿package `in`.mybhiwani.courseapp
 
 import android.content.Intent
 import android.graphics.Color
@@ -238,3 +238,4 @@ class ChaptersActivity : AppCompatActivity() {
         startActivity(intent)
     }
 }
+

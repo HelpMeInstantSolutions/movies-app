@@ -1,4 +1,4 @@
-package `in`.mybhiwani.courseapp
+﻿package `in`.mybhiwani.courseapp
 
 data class VideoLesson(
     val id: Int,
@@ -23,3 +23,4 @@ data class Chapter(
 ) {
     val totalVideos: Int get() = videos.size
 }
+

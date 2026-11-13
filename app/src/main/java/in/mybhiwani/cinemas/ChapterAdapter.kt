@@ -1,4 +1,4 @@
-package `in`.mybhiwani.courseapp
+﻿package `in`.mybhiwani.courseapp
 
 import android.view.LayoutInflater
 import android.view.View
@@ -62,3 +62,4 @@ class ChapterAdapter(
 
     override fun getItemCount(): Int = chapters.size
 }
+

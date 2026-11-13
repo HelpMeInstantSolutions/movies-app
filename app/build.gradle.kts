@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "in.mybhiwani.courseapp"
+    namespace = "in.mybhiwani.cinemas"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "in.mybhiwani.courseapp"
+        applicationId = "in.mybhiwani.cinemas"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -42,12 +42,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    // Google ExoPlayer (Media3) - 100% Native, Zero Watermark, Ultra-smooth Streaming
+    // Google ExoPlayer (Media3) - 100% Native Ultra-smooth Streaming Engine
     implementation("androidx.media3:media3-exoplayer:1.2.1")
     implementation("androidx.media3:media3-ui:1.2.1")
     implementation("androidx.media3:media3-common:1.2.1")
     implementation("androidx.media3:media3-exoplayer-hls:1.2.1")
-
-    // Dailymotion Native Player SDK 1.2.8 (rock-solid, stable with standard AGP and Android 10-15)
-    implementation("com.dailymotion.player.android:sdk:1.2.8")
+    implementation("androidx.media3:media3-exoplayer-dash:1.2.1")
 }

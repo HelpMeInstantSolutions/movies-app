@@ -1,4 +1,4 @@
-package `in`.mybhiwani.courseapp
+﻿package `in`.mybhiwani.courseapp
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -76,3 +76,4 @@ class LessonAdapter(
         }
     }
 }
+

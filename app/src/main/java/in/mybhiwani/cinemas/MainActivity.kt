@@ -1,4 +1,4 @@
-package `in`.mybhiwani.courseapp
+﻿package `in`.mybhiwani.courseapp
 
 import android.content.Intent
 import android.graphics.Color
@@ -305,3 +305,4 @@ class MediaAdapter(
 
     override fun getItemCount(): Int = items.size
 }
+

@@ -1,4 +1,4 @@
-package `in`.mybhiwani.courseapp
+﻿package `in`.mybhiwani.courseapp
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -33,3 +33,4 @@ class SessionManager(context: Context) {
         prefs.edit().clear().apply()
     }
 }
+
