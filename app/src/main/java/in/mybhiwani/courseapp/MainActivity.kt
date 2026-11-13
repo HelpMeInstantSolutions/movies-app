@@ -15,7 +15,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -28,15 +28,24 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-data class Course(
+data class MediaItem(
     val id: Int,
+    val type: String, // "movie" or "series"
     val title: String,
     val description: String,
-    val thumbnail: String,
-    val price: Double,
-    val totalChapters: Int = 0,
-    val totalVideos: Int = 0
+    val poster: String,
+    val backdrop: String,
+    val releaseYear: String,
+    val duration: String,
+    val rating: String,
+    val language: String,
+    val genreName: String,
+    val totalSeasons: Int = 0,
+    val totalEpisodes: Int = 0
 )
+
+// Legacy alias for Course so existing references compile seamlessly
+typealias Course = MediaItem
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,17 +54,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvEmptyTitle: TextView
     private lateinit var tvCourseCountBadge: TextView
     private lateinit var etSearch: EditText
+    private lateinit var tvTabAll: TextView
+    private lateinit var tvTabMovies: TextView
+    private lateinit var tvTabSeries: TextView
 
-    private val allCourses = mutableListOf<Course>()
-    private val displayedCourses = mutableListOf<Course>()
-    private lateinit var adapter: CourseAdapter
+    private val allMedia = mutableListOf<MediaItem>()
+    private val displayedMedia = mutableListOf<MediaItem>()
+    private lateinit var adapter: MediaAdapter
+    private var activeFilter: String = "all" // "all", "movie", "series"
 
     private val apiEndpoint = "https://cinemas.mybhiwani.in/api/courses.php?action=list"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Security feature: Disable screen recording & screenshots for pirated protection
+        // Strict Anti-Screen Capture & Anti-Piracy Flag (FLAG_SECURE)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_SECURE,
             WindowManager.LayoutParams.FLAG_SECURE
@@ -63,198 +76,232 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        val session = SessionManager(this)
-        findViewById<TextView>(R.id.tvUserWelcome)?.text = "Hello, ${session.getUserName()} 👋"
+        initViews()
+        setupListeners()
+        loadMedia()
+    }
 
-        findViewById<View>(R.id.btnLogout)?.setOnClickListener {
-            showLogoutConfirmation(session)
-        }
-
+    private fun initViews() {
         recyclerView = findViewById(R.id.recyclerViewCourses)
         layoutEmptyState = findViewById(R.id.layoutEmptyState)
         tvEmptyTitle = findViewById(R.id.tvEmptyTitle)
         tvCourseCountBadge = findViewById(R.id.tvCourseCountBadge)
         etSearch = findViewById(R.id.etSearchCourses)
+        tvTabAll = findViewById(R.id.tvTabAll)
+        tvTabMovies = findViewById(R.id.tvTabPaid)
+        tvTabSeries = findViewById(R.id.tvTabFree)
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = CourseAdapter(displayedCourses) { course ->
-            showCustomToast("Opening ${course.title} curriculum...")
-            val intent = Intent(this@MainActivity, ChaptersActivity::class.java).apply {
-                putExtra("COURSE_ID", course.id)
-                putExtra("COURSE_TITLE", course.title)
-                putExtra("COURSE_DESC", course.description)
-                putExtra("COURSE_THUMBNAIL", course.thumbnail)
-                putExtra("TOTAL_CHAPTERS", course.totalChapters)
-                putExtra("TOTAL_VIDEOS", course.totalVideos)
-            }
-            startActivity(intent)
+        tvTabMovies.text = "🎬 Movies"
+        tvTabSeries.text = "📺 Series"
+
+        // Grid Layout: 2 columns for movie/series poster cards
+        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        adapter = MediaAdapter(displayedMedia) { media ->
+            openMediaDetail(media)
         }
         recyclerView.adapter = adapter
 
-        setupSearch()
-        fetchCourses()
+        // Setup user header
+        val tvUserWelcome = findViewById<TextView>(R.id.tvUserWelcome)
+        val userName = SessionManager.getUserName(this)
+        tvUserWelcome.text = if (!userName.isNullOrEmpty()) "Welcome, $userName 🍿" else "Cinemas & Shows 🍿"
     }
 
-    private fun setupSearch() {
+    private fun setupListeners() {
+        findViewById<View>(R.id.btnLogout).setOnClickListener {
+            confirmLogout()
+        }
+
+        findViewById<View>(R.id.btnRefresh).setOnClickListener {
+            loadMedia()
+        }
+
+        tvTabAll.setOnClickListener {
+            setFilter("all")
+        }
+
+        tvTabMovies.setOnClickListener {
+            setFilter("movie")
+        }
+
+        tvTabSeries.setOnClickListener {
+            setFilter("series")
+        }
+
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                filterCourses(s?.toString()?.trim() ?: "")
+                filterList(s.toString())
             }
             override fun afterTextChanged(s: Editable?) {}
         })
     }
 
-    private fun filterCourses(query: String) {
-        displayedCourses.clear()
-        if (query.isEmpty()) {
-            displayedCourses.addAll(allCourses)
-        } else {
-            val q = query.lowercase()
-            for (c in allCourses) {
-                if (c.title.lowercase().contains(q) || c.description.lowercase().contains(q)) {
-                    displayedCourses.add(c)
-                }
-            }
-        }
-        adapter.notifyDataSetChanged()
-        updateEmptyState(query)
+    private fun setFilter(filter: String) {
+        activeFilter = filter
+        updateTabStyles()
+        filterList(etSearch.text.toString())
     }
 
-    private fun updateEmptyState(searchQuery: String = "") {
-        if (displayedCourses.isEmpty()) {
+    private fun updateTabStyles() {
+        tvTabAll.setBackgroundResource(if (activeFilter == "all") R.drawable.bg_tab_active else R.drawable.bg_tab_inactive)
+        tvTabAll.setTextColor(if (activeFilter == "all") Color.WHITE else Color.parseColor("#94A3B8"))
+
+        tvTabMovies.setBackgroundResource(if (activeFilter == "movie") R.drawable.bg_tab_active else R.drawable.bg_tab_inactive)
+        tvTabMovies.setTextColor(if (activeFilter == "movie") Color.WHITE else Color.parseColor("#94A3B8"))
+
+        tvTabSeries.setBackgroundResource(if (activeFilter == "series") R.drawable.bg_tab_active else R.drawable.bg_tab_inactive)
+        tvTabSeries.setTextColor(if (activeFilter == "series") Color.WHITE else Color.parseColor("#94A3B8"))
+    }
+
+    private fun loadMedia() {
+        lifecycleScope.launch {
+            try {
+                val result = withContext(Dispatchers.IO) {
+                    val url = URL(apiEndpoint)
+                    val conn = url.openConnection() as HttpURLConnection
+                    conn.requestMethod = "GET"
+                    conn.connectTimeout = 8000
+                    conn.readTimeout = 8000
+
+                    val reader = BufferedReader(InputStreamReader(conn.inputStream))
+                    val response = StringBuilder()
+                    var line: String?
+                    while (reader.readLine().also { line = it } != null) {
+                        response.append(line)
+                    }
+                    reader.close()
+                    response.toString()
+                }
+
+                val json = JSONObject(result)
+                if (json.optBoolean("status", false)) {
+                    val arr = json.getJSONArray("data")
+                    allMedia.clear()
+                    for (i in 0 until arr.length()) {
+                        val obj = arr.getJSONObject(i)
+                        allMedia.add(
+                            MediaItem(
+                                id = obj.optInt("id", 0),
+                                type = obj.optString("type", "movie"),
+                                title = obj.optString("title", "Untitled"),
+                                description = obj.optString("description", ""),
+                                poster = obj.optString("poster", obj.optString("thumbnail", "")),
+                                backdrop = obj.optString("backdrop", ""),
+                                releaseYear = obj.optString("release_year", "2024"),
+                                duration = obj.optString("duration", ""),
+                                rating = obj.optString("rating", "8.5"),
+                                language = obj.optString("language", "Hindi"),
+                                genreName = obj.optString("genre_name", obj.optString("category_name", "Cinema")),
+                                totalSeasons = obj.optInt("total_seasons", obj.optInt("total_chapters", 0)),
+                                totalEpisodes = obj.optInt("total_episodes", obj.optInt("total_videos", 0))
+                            )
+                        )
+                    }
+                    filterList(etSearch.text.toString())
+                }
+            } catch (e: Exception) {
+                Snackbar.make(recyclerView, "Network error: ${e.localizedMessage}", Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun filterList(query: String) {
+        val q = query.lowercase().trim()
+        displayedMedia.clear()
+
+        for (item in allMedia) {
+            val matchesFilter = when (activeFilter) {
+                "movie" -> item.type == "movie"
+                "series" -> item.type == "series"
+                else -> true
+            }
+
+            val matchesSearch = q.isEmpty() ||
+                    item.title.lowercase().contains(q) ||
+                    item.genreName.lowercase().contains(q) ||
+                    item.language.lowercase().contains(q)
+
+            if (matchesFilter && matchesSearch) {
+                displayedMedia.add(item)
+            }
+        }
+
+        adapter.notifyDataSetChanged()
+        tvCourseCountBadge.text = "${displayedMedia.size} Titles"
+
+        if (displayedMedia.isEmpty()) {
             layoutEmptyState.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
-            if (searchQuery.isNotEmpty()) {
-                tvEmptyTitle.text = "No courses match \"$searchQuery\""
-            } else {
-                tvEmptyTitle.text = "No courses available yet"
-            }
+            tvEmptyTitle.text = if (q.isNotEmpty()) "No titles matching '$q'" else "No movies or shows available"
         } else {
             layoutEmptyState.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
-        tvCourseCountBadge.text = "${displayedCourses.size} Batches"
     }
 
-    private fun showLogoutConfirmation(session: SessionManager) {
+    private fun openMediaDetail(media: MediaItem) {
+        val intent = Intent(this, ChaptersActivity::class.java).apply {
+            putExtra("COURSE_ID", media.id)
+            putExtra("COURSE_TITLE", media.title)
+            putExtra("COURSE_DESC", media.description)
+            putExtra("MEDIA_TYPE", media.type)
+            putExtra("MEDIA_POSTER", media.poster)
+            putExtra("MEDIA_BACKDROP", media.backdrop)
+        }
+        startActivity(intent)
+    }
+
+    private fun confirmLogout() {
         AlertDialog.Builder(this)
             .setTitle("Sign Out")
-            .setMessage("Are you sure you want to log out from this device?")
+            .setMessage("Do you want to sign out from Cinemas App?")
             .setPositiveButton("Sign Out") { _, _ ->
-                session.logout()
+                SessionManager.clearSession(this)
                 startActivity(Intent(this, AuthActivity::class.java))
                 finish()
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
-
-    private fun fetchCourses() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val url = URL(apiEndpoint)
-                val conn = url.openConnection() as HttpURLConnection
-                conn.requestMethod = "GET"
-                conn.connectTimeout = 8000
-                conn.readTimeout = 8000
-
-                if (conn.responseCode == 200) {
-                    val reader = BufferedReader(InputStreamReader(conn.inputStream))
-                    val response = reader.readText()
-                    reader.close()
-
-                    val json = JSONObject(response)
-                    if (json.getBoolean("status")) {
-                        val dataArray = json.getJSONArray("data")
-                        allCourses.clear()
-
-                        for (i in 0 until dataArray.length()) {
-                            val item = dataArray.getJSONObject(i)
-                            allCourses.add(
-                                Course(
-                                    id = item.getInt("id"),
-                                    title = item.getString("title"),
-                                    description = item.optString("description", ""),
-                                    thumbnail = item.optString("thumbnail", ""),
-                                    price = item.optDouble("price", 0.0),
-                                    totalChapters = item.optInt("total_chapters", 0),
-                                    totalVideos = item.optInt("total_videos", 0)
-                                )
-                            )
-                        }
-
-                        withContext(Dispatchers.Main) {
-                            filterCourses(etSearch.text.toString().trim())
-                        }
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        updateEmptyState()
-                        showCustomToast("Failed to load courses. Check internet connection.")
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    updateEmptyState()
-                    showCustomToast("Network: ${e.localizedMessage}")
-                }
-            }
-        }
-    }
-
-    private fun showCustomToast(message: String) {
-        val rootView = findViewById<View>(android.R.id.content)
-        Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(Color.parseColor("#131B2E"))
-            .setTextColor(Color.WHITE)
-            .show()
-    }
 }
 
-class CourseAdapter(
-    private val list: List<Course>,
-    private val onClick: (Course) -> Unit
-) : RecyclerView.Adapter<CourseAdapter.VH>() {
+class MediaAdapter(
+    private val items: List<MediaItem>,
+    private val onClick: (MediaItem) -> Unit
+) : RecyclerView.Adapter<MediaAdapter.MediaViewHolder>() {
 
-    class VH(v: View) : RecyclerView.ViewHolder(v) {
-        val img: ImageView = v.findViewById(R.id.imgThumb)
-        val title: TextView = v.findViewById(R.id.tvTitle)
-        val desc: TextView = v.findViewById(R.id.tvDesc)
-        val lessons: TextView = v.findViewById(R.id.tvLessons)
-        val priceTag: TextView = v.findViewById(R.id.tvPriceTag)
-        val btnOpen: View = v.findViewById(R.id.btnOpenCourse)
+    class MediaViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+        val ivPoster: ImageView = v.findViewById(R.id.ivCourseThumbnail)
+        val tvTitle: TextView = v.findViewById(R.id.tvCourseTitle)
+        val tvDesc: TextView = v.findViewById(R.id.tvCourseDescription)
+        val tvBadge: TextView = v.findViewById(R.id.tvCourseCategory)
+        val tvStats: TextView = v.findViewById(R.id.tvCoursePrice)
+        val btnPlay: View = v.findViewById(R.id.btnOpenCourse)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_course_card, parent, false)
-        return VH(v)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_course_card, parent, false)
+        return MediaViewHolder(view)
     }
 
-    override fun getItemCount() = list.size
+    override fun onBindViewHolder(holder: MediaViewHolder, position: Int) {
+        val item = items[position]
+        holder.tvTitle.text = item.title
+        holder.tvDesc.text = "${item.releaseYear} • ${item.genreName} • ★ ${item.rating}"
+        holder.tvBadge.text = item.type.uppercase()
+        holder.tvStats.text = if (item.type == "series") "${item.totalSeasons} Seasons" else (if (item.duration.isNotEmpty()) item.duration else "Full Movie")
 
-    override fun onBindViewHolder(holder: VH, position: Int) {
-        val item = list[position]
-        holder.title.text = item.title
-        holder.desc.text = if (item.description.isNotEmpty()) item.description else "Comprehensive online video batch."
-        holder.lessons.text = if (item.totalChapters > 0) {
-            "${item.totalChapters} Chapters • ${item.totalVideos} Lessons"
-        } else {
-            "${item.totalVideos} Lessons"
-        }
-        holder.priceTag.text = if (item.price > 0) "₹${item.price}" else "FREE BATCH"
-
-        if (item.thumbnail.isNotEmpty()) {
-            Glide.with(holder.itemView.context)
-                .load(item.thumbnail)
-                .centerCrop()
-                .into(holder.img)
-        } else {
-            holder.img.setImageResource(R.drawable.bg_input_field)
-        }
+        Glide.with(holder.itemView.context)
+            .load(if (item.poster.isNotEmpty()) item.poster else item.backdrop)
+            .placeholder(R.drawable.bg_rounded_card)
+            .error(R.drawable.bg_rounded_card)
+            .centerCrop()
+            .into(holder.ivPoster)
 
         holder.itemView.setOnClickListener { onClick(item) }
-        holder.btnOpen.setOnClickListener { onClick(item) }
+        holder.btnPlay.setOnClickListener { onClick(item) }
     }
-}
 
+    override fun getItemCount(): Int = items.size
+}
