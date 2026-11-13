@@ -440,8 +440,10 @@ class PlayerActivity : AppCompatActivity() {
         episodeAdapter.updateCurrentVideoId(episode.id)
         lastStreamStartTimeMs = System.currentTimeMillis()
 
-        // For movie mode: Always keep Movie Title!
-        tvCurrentStreamTitle.text = if (isMovieMode) mediaTitle else episode.title
+        // For movie mode: Keep Movie Title with Part indicator if multi-part!
+        tvCurrentStreamTitle.text = if (isMovieMode) {
+            if (streamsList.size > 1) "$mediaTitle - Part ${currentStreamIndex + 1}" else mediaTitle
+        } else episode.title
 
         progressBar.visibility = View.VISIBLE
 
@@ -654,13 +656,21 @@ class PlayerActivity : AppCompatActivity() {
                         data.optString("duration", "2h 44m")
                     }
 
-                    // For Movie with multiple links: Seamlessly hide playlist list so user feels it's 1 single movie
+                    // For Movie with multiple links: Show linked parts so viewer has full control and visibility
                     if (isMovieMode) {
-                        playlistHeaderSection.visibility = View.GONE
-                        rvStreamsList.visibility = View.GONE
-                        btnNextStream.visibility = View.GONE
-                        tvPlayerStreamCounter.text = "Full Feature Film • $formattedTotalRuntime"
-                        tvCurrentStreamTitle.text = mediaTitle
+                        if (streamsList.size > 1) {
+                            playlistHeaderSection.visibility = View.VISIBLE
+                            rvStreamsList.visibility = View.VISIBLE
+                            btnNextStream.visibility = View.VISIBLE
+                            tvPlayerStreamCounter.text = "Feature Film • $formattedTotalRuntime (${streamsList.size} Parts Linked)"
+                            tvPlaylistCount.text = "${streamsList.size} Movie Parts • Continuous Auto-Play"
+                        } else {
+                            playlistHeaderSection.visibility = View.GONE
+                            rvStreamsList.visibility = View.GONE
+                            btnNextStream.visibility = View.GONE
+                            tvPlayerStreamCounter.text = "Full Feature Film • $formattedTotalRuntime"
+                        }
+                        tvCurrentStreamTitle.text = if (streamsList.size > 1) "$mediaTitle - Part ${currentStreamIndex + 1}" else mediaTitle
                     } else {
                         playlistHeaderSection.visibility = View.VISIBLE
                         rvStreamsList.visibility = View.VISIBLE

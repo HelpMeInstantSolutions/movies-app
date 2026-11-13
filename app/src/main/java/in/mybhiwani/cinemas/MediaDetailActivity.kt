@@ -227,10 +227,18 @@ class MediaDetailActivity : AppCompatActivity() {
                         }
 
                         tvMediaStats.text = "HD 1080p • Dolby Atmos • $formattedRuntime"
-                        tvSeasonCountPill.text = "Feature Film"
-                        seriesSectionHeader.visibility = View.GONE
+                        val tvSectionTitle = findViewById<TextView?>(R.id.tvSeriesSectionTitle)
+                        if (allEpisodesList.size > 1) {
+                            tvSeasonCountPill.text = "Feature Film • ${allEpisodesList.size} Parts"
+                            tvSectionTitle?.text = "Movie Parts (${allEpisodesList.size} Segments Linked)"
+                            seriesSectionHeader.visibility = View.VISIBLE
+                            rvSeasons.visibility = View.VISIBLE
+                        } else {
+                            tvSeasonCountPill.text = "Feature Film"
+                            seriesSectionHeader.visibility = View.GONE
+                            rvSeasons.visibility = View.GONE
+                        }
                         layoutEmptyMedia.visibility = View.GONE
-                        rvSeasons.visibility = View.GONE
                         btnStartStreaming.visibility = View.VISIBLE
                     } else if (seasonsList.isEmpty() || totalEpCount == 0) {
                         layoutEmptyMedia.visibility = View.VISIBLE
