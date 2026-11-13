@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#131B2E">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Poster Box (Portrait ratio ~ 3:4) -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp">
+
+            <ImageView
+                android:id="@+id/ivCourseThumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_rounded_card" />
+
+            <!-- Gradient Shade for text visibility -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_gravity="bottom"
+                android:background="#AA0B0F19" />
+
+            <!-- Media Type Pill (Top Left) -->
+            <TextView
+                android:id="@+id/tvCourseCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MOVIE"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:background="#CCEF4444"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="3dp"
+                android:layout_margin="8dp" />
+
+            <!-- Play Quick Icon Button (Bottom Right) -->
+            <ImageButton
+                android:id="@+id/btnOpenCourse"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_tab_active"
+                android:src="@drawable/ic_play_arrow"
+                android:tint="#FFFFFF"
+                android:elevation="2dp"
+                android:contentDescription="Play" />
+        </FrameLayout>
+
+        <!-- Media Info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tvCourseTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Movie Title"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/tvCourseDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2024 • Action • ★ 8.8"
+                android:textColor="#94A3B8"
+                android:textSize="11sp"
+                android:layout_marginTop="3dp"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/tvCoursePrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Full Movie"
+                android:textColor="#38BDF8"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

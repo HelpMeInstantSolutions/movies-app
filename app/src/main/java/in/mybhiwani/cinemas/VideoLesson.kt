@@ -1,4 +1,4 @@
-﻿package `in`.mybhiwani.courseapp
+package `in`.mybhiwani.cinemas
 
 data class VideoLesson(
     val id: Int,
@@ -6,6 +6,7 @@ data class VideoLesson(
     val chapterId: Int = 0,
     val chapterTitle: String = "",
     val title: String,
+    val description: String = "",
     val dailymotionId: String,
     val duration: String = "15:00",
     val sortOrder: Int = 1,
@@ -18,9 +19,7 @@ data class Chapter(
     val title: String,
     val description: String = "",
     val sortOrder: Int = 1,
+    val totalVideos: Int = 0,
     val videos: List<VideoLesson> = emptyList(),
     var isExpanded: Boolean = true
-) {
-    val totalVideos: Int get() = videos.size
-}
-
+)

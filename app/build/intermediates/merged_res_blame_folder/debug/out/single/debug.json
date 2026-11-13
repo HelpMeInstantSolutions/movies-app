@@ -1,0 +1,174 @@
+[
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_bg_tab_inactive.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/bg_tab_inactive.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/layout_activity_main.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/layout/activity_main.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_speed.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_speed.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_bg_rounded_card.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/bg_rounded_card.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/layout_activity_player.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/layout/activity_player.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_fullscreen.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_fullscreen.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_forward_10.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_forward_10.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_bg_tab_active.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/bg_tab_active.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_fullscreen_exit.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_fullscreen_exit.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_arrow_back.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_arrow_back.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_folder.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_folder.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_logout.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_logout.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_email.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_email.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_lock_open.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_lock_open.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/layout_activity_chapters.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/layout/activity_chapters.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_bg_chapter_header.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/bg_chapter_header.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_bg_seek_bubble.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/bg_seek_bubble.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_lock.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_lock.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_replay_10.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_replay_10.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/layout_item_course_card.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/layout/item_course_card.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_bg_glass_pill.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/bg_glass_pill.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_skip_next.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_skip_next.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_bg_gradient_brand.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/bg_gradient_brand.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_search.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_search.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_cinema_logo.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_cinema_logo.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_person.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_person.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/layout_activity_auth.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/layout/activity_auth.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_bg_input_field.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/bg_input_field.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_expand_less.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_expand_less.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_play_arrow.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_play_arrow.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/layout_item_lesson_row.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/layout/item_lesson_row.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/layout_item_chapter_card.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/layout/item_chapter_card.xml"
+    },
+    {
+        "merged": "in.mybhiwani.cinemas.app-merged_res-38:/drawable_ic_expand_more.xml.flat",
+        "source": "in.mybhiwani.cinemas.app-main-40:/drawable/ic_expand_more.xml"
+    }
+]

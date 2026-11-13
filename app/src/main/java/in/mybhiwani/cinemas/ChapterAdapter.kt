@@ -1,4 +1,4 @@
-﻿package `in`.mybhiwani.courseapp
+package `in`.mybhiwani.cinemas
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import `in`.mybhiwani.cinemas.R
 
 class ChapterAdapter(
     private val chapters: List<Chapter>,
@@ -32,16 +33,14 @@ class ChapterAdapter(
         val chapter = chapters[position]
 
         holder.tvChapterTitle.text = chapter.title
-        holder.tvChapterInfo.text = "${chapter.videos.size} Lectures"
+        holder.tvChapterInfo.text = "${chapter.videos.size} Episodes"
 
-        // Setup nested RecyclerView for lessons
         holder.rvChapterLessons.layoutManager = LinearLayoutManager(holder.itemView.context)
         val lessonAdapter = LessonAdapter(chapter.videos) { lesson ->
             onLessonClicked(lesson)
         }
         holder.rvChapterLessons.adapter = lessonAdapter
 
-        // Expand / Collapse state
         updateExpandState(holder, chapter.isExpanded)
 
         holder.chapterHeaderRow.setOnClickListener {
@@ -62,4 +61,3 @@ class ChapterAdapter(
 
     override fun getItemCount(): Int = chapters.size
 }
-

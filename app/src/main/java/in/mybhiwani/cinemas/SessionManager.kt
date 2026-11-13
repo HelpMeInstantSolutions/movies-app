@@ -1,16 +1,26 @@
-﻿package `in`.mybhiwani.courseapp
+package `in`.mybhiwani.cinemas
 
 import android.content.Context
 import android.content.SharedPreferences
 
 class SessionManager(context: Context) {
-    private val prefs: SharedPreferences = context.getSharedPreferences("CourseAppUserSession", Context.MODE_PRIVATE)
+    private val prefs: SharedPreferences = context.getSharedPreferences("CinemasUserSession", Context.MODE_PRIVATE)
 
     companion object {
         private const val KEY_IS_LOGGED_IN = "is_logged_in"
         private const val KEY_USER_ID = "user_id"
         private const val KEY_USER_NAME = "user_name"
         private const val KEY_USER_EMAIL = "user_email"
+
+        fun getUserName(context: Context): String {
+            val sp = context.getSharedPreferences("CinemasUserSession", Context.MODE_PRIVATE)
+            return sp.getString(KEY_USER_NAME, "Movie Buff") ?: "Movie Buff"
+        }
+
+        fun clearSession(context: Context) {
+            val sp = context.getSharedPreferences("CinemasUserSession", Context.MODE_PRIVATE)
+            sp.edit().clear().apply()
+        }
     }
 
     fun saveUserSession(id: Int, name: String, email: String) {
@@ -25,7 +35,7 @@ class SessionManager(context: Context) {
 
     fun isLoggedIn(): Boolean = prefs.getBoolean(KEY_IS_LOGGED_IN, false)
 
-    fun getUserName(): String = prefs.getString(KEY_USER_NAME, "Student") ?: "Student"
+    fun getUserName(): String = prefs.getString(KEY_USER_NAME, "Movie Buff") ?: "Movie Buff"
 
     fun getUserEmail(): String = prefs.getString(KEY_USER_EMAIL, "") ?: ""
 
@@ -33,4 +43,3 @@ class SessionManager(context: Context) {
         prefs.edit().clear().apply()
     }
 }
-

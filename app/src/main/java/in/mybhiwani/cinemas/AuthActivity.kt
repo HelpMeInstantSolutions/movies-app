@@ -1,4 +1,4 @@
-﻿package `in`.mybhiwani.courseapp
+package `in`.mybhiwani.cinemas
 
 import android.content.Intent
 import android.graphics.Color
@@ -204,5 +204,7 @@ class AuthActivity : AppCompatActivity() {
             .show()
     }
 }
+
+
 
 

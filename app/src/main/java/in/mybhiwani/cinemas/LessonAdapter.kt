@@ -1,4 +1,4 @@
-﻿package `in`.mybhiwani.courseapp
+package `in`.mybhiwani.cinemas
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import `in`.mybhiwani.cinemas.R
 
 class LessonAdapter(
     private val items: List<VideoLesson>,
+    private var currentVideoId: Int = 0,
     private val onSelect: (VideoLesson) -> Unit
 ) : RecyclerView.Adapter<LessonAdapter.LessonVH>() {
 
-    private var selectedIndex = 0
-
-    fun setSelectedPosition(position: Int) {
-        selectedIndex = position
+    fun updateCurrentVideoId(id: Int) {
+        currentVideoId = id
         notifyDataSetChanged()
     }
 
@@ -42,38 +42,25 @@ class LessonAdapter(
         holder.tvTitle.text = item.title
         holder.tvDuration.text = item.duration
 
-        if (item.isFreePreview) {
-            holder.tvBadge.text = "• Free Demo"
-            holder.tvBadge.setTextColor(Color.parseColor("#10B981"))
-        } else {
-            holder.tvBadge.text = "• Enrolled"
-            holder.tvBadge.setTextColor(Color.parseColor("#94A3B8"))
-        }
-
-        val isPlaying = (position == selectedIndex)
-        if (isPlaying) {
-            holder.root.setBackgroundResource(R.drawable.bg_gradient_brand)
-            holder.tvTitle.setTextColor(Color.WHITE)
-            holder.tvDuration.setTextColor(Color.parseColor("#E0E7FF"))
-            holder.tvNumber.setBackgroundColor(Color.parseColor("#312E81"))
-            holder.tvNumber.setTextColor(Color.parseColor("#38BDF8"))
+        val isSelected = (item.id == currentVideoId)
+        if (isSelected) {
+            holder.root.setBackgroundColor(Color.parseColor("#1E293B"))
+            holder.tvTitle.setTextColor(Color.parseColor("#E11D48"))
             holder.iconPlay.setImageResource(R.drawable.ic_play_arrow)
-            holder.iconPlay.setColorFilter(Color.WHITE)
+            holder.iconPlay.setColorFilter(Color.parseColor("#E11D48"))
         } else {
-            holder.root.setBackgroundResource(R.drawable.bg_rounded_card)
+            holder.root.setBackgroundColor(Color.TRANSPARENT)
             holder.tvTitle.setTextColor(Color.WHITE)
-            holder.tvDuration.setTextColor(Color.parseColor("#94A3B8"))
-            holder.tvNumber.setBackgroundResource(R.drawable.bg_tab_inactive)
-            holder.tvNumber.setTextColor(Color.parseColor("#38BDF8"))
             holder.iconPlay.setImageResource(R.drawable.ic_play_arrow)
             holder.iconPlay.setColorFilter(Color.parseColor("#64748B"))
         }
 
-        holder.itemView.setOnClickListener {
-            selectedIndex = position
-            notifyDataSetChanged()
+        holder.tvBadge.text = "• Stream"
+        holder.tvBadge.setTextColor(Color.parseColor("#10B981"))
+
+        holder.root.setOnClickListener {
+            updateCurrentVideoId(item.id)
             onSelect(item)
         }
     }
 }
-

@@ -1,7 +1,6 @@
-﻿package `in`.mybhiwani.courseapp
+package `in`.mybhiwani.cinemas
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -22,6 +21,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import `in`.mybhiwani.cinemas.R
 
 class ChaptersActivity : AppCompatActivity() {
 
@@ -47,7 +47,7 @@ class ChaptersActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Strict Anti-Screen Capture & Anti-Piracy Flag
+        // Anti-Piracy Flag
         window.setFlags(
             WindowManager.LayoutParams.FLAG_SECURE,
             WindowManager.LayoutParams.FLAG_SECURE
@@ -77,14 +77,11 @@ class ChaptersActivity : AppCompatActivity() {
         layoutEmptyChapters = findViewById(R.id.layoutEmptyChapters)
         rvChapters = findViewById(R.id.rvChapters)
 
-        val tvSectionTitle = findViewById<TextView>(R.id.tvSectionTitle)
         if (mediaType == "series") {
             tvTopSubtitle.text = "Seasons & Episodes"
-            tvSectionTitle.text = "Series Seasons"
             btnStartLearning.text = "Watch S1:E1 ▶"
         } else {
-            tvTopSubtitle.text = "Full Movie Streaming"
-            tvSectionTitle.text = "Streaming Sources"
+            tvTopSubtitle.text = "Full Feature Movie"
             btnStartLearning.text = "Play Movie Now ▶"
         }
 
@@ -95,7 +92,7 @@ class ChaptersActivity : AppCompatActivity() {
         btnBack.setOnClickListener { finish() }
 
         rvChapters.layoutManager = LinearLayoutManager(this)
-        chapterAdapter = ChapterAdapter(this, chaptersList) { selectedVideo ->
+        chapterAdapter = ChapterAdapter(chaptersList) { selectedVideo ->
             openPlayer(selectedVideo)
         }
         rvChapters.adapter = chapterAdapter
@@ -181,7 +178,7 @@ class ChaptersActivity : AppCompatActivity() {
                                     sortOrder = cSort,
                                     totalVideos = lessonsInChapter.size,
                                     videos = lessonsInChapter,
-                                    isExpanded = (i == 0) // First season expanded by default
+                                    isExpanded = (i == 0)
                                 )
                             )
                         }
@@ -189,25 +186,25 @@ class ChaptersActivity : AppCompatActivity() {
 
                     chaptersLoader.visibility = View.GONE
 
-                    if (chaptersList.isEmpty() || totalLessonsCount == 0) {
+                    // If Movie with multiple links: Direct open or display unified stream
+                    if (mediaType == "movie") {
+                        tvCurriculumStats.text = "HD 1080p • Dolby Atmos Audio"
+                        tvChapterCountPill.text = "Feature Film"
+                        layoutEmptyChapters.visibility = View.GONE
+                        rvChapters.visibility = View.GONE
+                        btnStartLearning.visibility = View.VISIBLE
+                    } else if (chaptersList.isEmpty() || totalLessonsCount == 0) {
                         layoutEmptyChapters.visibility = View.VISIBLE
                         rvChapters.visibility = View.GONE
-                        tvCurriculumStats.text = if (mediaType == "series") "0 Seasons • 0 Episodes" else "Movie Stream Unavailable"
+                        tvCurriculumStats.text = "0 Seasons • 0 Episodes"
                         tvChapterCountPill.text = "0 Streams"
                         btnStartLearning.visibility = View.GONE
                     } else {
                         layoutEmptyChapters.visibility = View.GONE
                         rvChapters.visibility = View.VISIBLE
                         btnStartLearning.visibility = View.VISIBLE
-
-                        if (mediaType == "series") {
-                            tvCurriculumStats.text = "${chaptersList.size} Seasons • $totalLessonsCount Episodes"
-                            tvChapterCountPill.text = "${chaptersList.size} Seasons"
-                        } else {
-                            tvCurriculumStats.text = "HD 1080p • Dolby Atmos Audio"
-                            tvChapterCountPill.text = "Feature Film"
-                        }
-
+                        tvCurriculumStats.text = "${chaptersList.size} Seasons • $totalLessonsCount Episodes"
+                        tvChapterCountPill.text = "${chaptersList.size} Seasons"
                         chapterAdapter.notifyDataSetChanged()
                     }
                 } else {
@@ -238,4 +235,3 @@ class ChaptersActivity : AppCompatActivity() {
         startActivity(intent)
     }
 }
-

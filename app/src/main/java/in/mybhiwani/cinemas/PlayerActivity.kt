@@ -1,9 +1,8 @@
-﻿package `in`.mybhiwani.cinemas
+package `in`.mybhiwani.cinemas
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -18,14 +17,12 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.PlaybackParameters
@@ -42,14 +39,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
 class PlayerActivity : AppCompatActivity() {
 
-    // Native ExoPlayer (Media3 - Ultra-fast HD HLS/MP4 Streaming)
+    // Native ExoPlayer (Media3 - Seamless multi-stream gapless playlist)
     private var exoPlayer: ExoPlayer? = null
     private lateinit var exoPlayerView: PlayerView
 
@@ -71,7 +66,6 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var btnSpeedToggle: TextView
     private lateinit var btnLockToggle: ImageButton
     private lateinit var btnFullscreenToggle: ImageButton
-    private lateinit var btnAspectRatioToggle: ImageButton
     private lateinit var layoutLockOverlay: View
     private lateinit var btnUnlockTap: View
     private lateinit var seekLeftBubble: View
@@ -81,13 +75,13 @@ class PlayerActivity : AppCompatActivity() {
     private val lessons = mutableListOf<VideoLesson>()
 
     private var courseId: Int = 1
-    private var courseTitle: String = "Movie / Episode"
+    private var courseTitle: String = "Movie Stream"
     private var initialVideoId: Int = 0
     private var currentLessonIndex: Int = 0
     private var currentSpeed: Double = 1.0
     private var isFullscreen: Boolean = false
     private var isScreenLocked: Boolean = false
-    private var currentResizeMode: Int = AspectRatioFrameLayout.RESIZE_MODE_FIT
+    private var isMovieMode: Boolean = false
 
     private lateinit var gestureDetector: GestureDetector
     private val hideHandler = Handler(Looper.getMainLooper())
@@ -118,16 +112,16 @@ class PlayerActivity : AppCompatActivity() {
     private fun initViews() {
         videoContainer = findViewById(R.id.videoContainer)
         exoPlayerView = findViewById(R.id.exoPlayerView)
-        webView = findViewById(R.id.webViewPlayer)
-        progressBar = findViewById(R.id.playerProgressBar)
+        webView = findViewById(R.id.playerWebView)
+        progressBar = findViewById(R.id.playerLoader)
         playerTopBar = findViewById(R.id.playerTopBar)
         playerMetaSection = findViewById(R.id.playerMetaSection)
         playlistHeaderSection = findViewById(R.id.playlistHeaderSection)
-        rvLessons = findViewById(R.id.rvPlaylistLessons)
+        rvLessons = findViewById(R.id.rvLessonList)
 
         tvPlayerCourseTitle = findViewById(R.id.tvPlayerCourseTitle)
         tvPlayerLessonCounter = findViewById(R.id.tvPlayerLessonCounter)
-        tvCurrentLesson = findViewById(R.id.tvCurrentLessonTitle)
+        tvCurrentLesson = findViewById(R.id.tvCurrentLesson)
         tvPlaylistCount = findViewById(R.id.tvPlaylistCount)
 
         btnSpeedToggle = findViewById(R.id.btnSpeedToggle)
@@ -156,7 +150,7 @@ class PlayerActivity : AppCompatActivity() {
             .build()
 
         exoPlayerView.player = exoPlayer
-        exoPlayerView.resizeMode = currentResizeMode
+        exoPlayerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
         exoPlayerView.controllerShowTimeoutMs = 3000
         exoPlayerView.controllerAutoShow = true
 
@@ -167,6 +161,7 @@ class PlayerActivity : AppCompatActivity() {
                     Player.STATE_READY -> progressBar.visibility = View.GONE
                     Player.STATE_ENDED -> {
                         progressBar.visibility = View.GONE
+                        // Auto play seamless next segment / episode
                         playNextVideo()
                     }
                     Player.STATE_IDLE -> {}
@@ -175,9 +170,20 @@ class PlayerActivity : AppCompatActivity() {
 
             override fun onPlayerError(error: PlaybackException) {
                 progressBar.visibility = View.GONE
-                // Seamless fallback to web embed if direct native streaming stream fails
                 if (lessons.isNotEmpty() && currentLessonIndex < lessons.size) {
                     loadInWebView(lessons[currentLessonIndex].dailymotionId)
+                }
+            }
+
+            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                super.onMediaItemTransition(mediaItem, reason)
+                val newIndex = exoPlayer?.currentMediaItemIndex ?: 0
+                if (newIndex in lessons.indices && newIndex != currentLessonIndex) {
+                    currentLessonIndex = newIndex
+                    val lesson = lessons[newIndex]
+                    lessonAdapter.updateCurrentVideoId(lesson.id)
+                    tvCurrentLesson.text = if (isMovieMode) courseTitle else lesson.title
+                    tvPlayerLessonCounter.text = if (isMovieMode) "Full Feature Film" else "Stream ${currentLessonIndex + 1} of ${lessons.size}"
                 }
             }
         })
@@ -213,11 +219,9 @@ class PlayerActivity : AppCompatActivity() {
                 if (isScreenLocked) return false
                 val width = videoContainer.width
                 if (e.x < width / 2) {
-                    // Double Tap Left: Rewind 10s
                     seekRelative(-10000)
                     showSeekFeedback(seekLeftBubble)
                 } else {
-                    // Double Tap Right: Forward 10s
                     seekRelative(10000)
                     showSeekFeedback(seekRightBubble)
                 }
@@ -242,7 +246,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun setupControls() {
-        findViewById<View>(R.id.btnPlayerBack).setOnClickListener { finish() }
+        findViewById<View>(R.id.btnBackFromPlayer).setOnClickListener { finish() }
 
         btnSpeedToggle.setOnClickListener {
             togglePlaybackSpeed()
@@ -258,6 +262,10 @@ class PlayerActivity : AppCompatActivity() {
 
         btnUnlockTap.setOnClickListener {
             unlockScreen()
+        }
+
+        findViewById<View>(R.id.btnNextLesson).setOnClickListener {
+            playNextVideo()
         }
     }
 
@@ -308,8 +316,11 @@ class PlayerActivity : AppCompatActivity() {
     private fun exitFullscreenMode() {
         playerTopBar.visibility = View.VISIBLE
         playerMetaSection.visibility = View.VISIBLE
-        playlistHeaderSection.visibility = View.VISIBLE
-        rvLessons.visibility = View.VISIBLE
+
+        if (!isMovieMode) {
+            playlistHeaderSection.visibility = View.VISIBLE
+            rvLessons.visibility = View.VISIBLE
+        }
 
         val height = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, 220f, resources.displayMetrics
@@ -353,24 +364,26 @@ class PlayerActivity : AppCompatActivity() {
             .start()
     }
 
+    /**
+     * Seamless multi-link gapless playback:
+     * If movie has multiple parts/links, they are concatenated in ExoPlayer queue seamlessly.
+     */
     private fun playVideo(lesson: VideoLesson) {
         currentLessonIndex = lessons.indexOfFirst { it.id == lesson.id }.coerceAtLeast(0)
         lessonAdapter.updateCurrentVideoId(lesson.id)
 
-        tvCurrentLesson.text = lesson.title
-        tvPlayerLessonCounter.text = if (lessons.size > 1) "Stream ${currentLessonIndex + 1} of ${lessons.size}" else "Full Feature"
+        tvCurrentLesson.text = if (isMovieMode) courseTitle else lesson.title
+        tvPlayerLessonCounter.text = if (isMovieMode) "Full Feature Film" else "Stream ${currentLessonIndex + 1} of ${lessons.size}"
 
         progressBar.visibility = View.VISIBLE
 
         val rawId = lesson.dailymotionId.trim()
 
-        // 1. Direct HLS / MP4 Stream Playback with ExoPlayer
         if (rawId.startsWith("http") && (rawId.contains(".m3u8") || rawId.contains(".mp4") || rawId.contains(".webm"))) {
             playDirectUrl(rawId)
             return
         }
 
-        // 2. Fetch authenticated HLS streaming token or embed via cinemas.mybhiwani.in API
         fetchAndPlayStream(rawId)
     }
 
@@ -479,6 +492,9 @@ class PlayerActivity : AppCompatActivity() {
                 val json = JSONObject(result)
                 if (json.optBoolean("status", false)) {
                     val data = json.getJSONObject("data")
+                    val mediaType = data.optString("type", "movie")
+                    isMovieMode = (mediaType == "movie")
+
                     val chaptersArr = data.optJSONArray("seasons") ?: data.optJSONArray("chapters")
 
                     lessons.clear()
@@ -505,7 +521,17 @@ class PlayerActivity : AppCompatActivity() {
                         }
                     }
 
-                    tvPlaylistCount.text = "${lessons.size} Available"
+                    // For Movie with multiple links: Seamlessly hide playlist list so user feels it's 1 single movie
+                    if (isMovieMode) {
+                        playlistHeaderSection.visibility = View.GONE
+                        rvLessons.visibility = View.GONE
+                        tvPlayerLessonCounter.text = "Full Feature Film"
+                    } else {
+                        playlistHeaderSection.visibility = View.VISIBLE
+                        rvLessons.visibility = View.VISIBLE
+                        tvPlaylistCount.text = "${lessons.size} Available"
+                    }
+
                     lessonAdapter.notifyDataSetChanged()
 
                     val target = if (initialVideoId > 0) {
@@ -517,7 +543,7 @@ class PlayerActivity : AppCompatActivity() {
                     target?.let { playVideo(it) }
                 }
             } catch (e: Exception) {
-                Snackbar.make(videoContainer, "Could not load playlist", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(videoContainer, "Could not load media streams", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
