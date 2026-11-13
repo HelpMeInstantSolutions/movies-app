@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0B0F19">
+
+    <!-- Top App Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:background="#131B2E"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="18dp"
+        android:elevation="4dp">
+
+        <ImageView
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginEnd="12dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvUserWelcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hello, Student 👋"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Explore your online video courses"
+                android:textColor="#94A3B8"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnLogout"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_logout"
+            android:tint="#EF4444"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Logout" />
+    </LinearLayout>
+
+    <!-- Search & Filter Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Search Input -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_input_field"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="14dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_search"
+                android:tint="#94A3B8"
+                android:layout_marginEnd="10dp" />
+
+            <EditText
+                android:id="@+id/etSearchCourses"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Search courses, exams, or topics..."
+                android:background="@null"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#64748B"
+                android:textSize="13sp"
+                android:inputType="text" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Section Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="18dp"
+        android:paddingBottom="8dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Available Video Batches"
+            android:textColor="#F8FAFC"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvCourseCountBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 Courses"
+            android:textColor="#38BDF8"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:background="@drawable/bg_glass_pill"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="3dp" />
+    </LinearLayout>
+
+    <!-- Empty State View -->
+    <LinearLayout
+        android:id="@+id/layoutEmptyState"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_play_arrow"
+            android:tint="#4F46E5"
+            android:background="@drawable/bg_input_field"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/tvEmptyTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No courses available yet"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Batches added from the Admin portal will appear here in real-time."
+            android:textColor="#94A3B8"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:layout_marginTop="6dp" />
+    </LinearLayout>
+
+    <!-- Recycler View for Courses -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCourses"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false" />
+
+</LinearLayout>

@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0B0F19">
+
+    <!-- Top Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/playerTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#131B2E"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="14dp"
+        android:elevation="4dp">
+
+        <ImageButton
+            android:id="@+id/btnBackFromPlayer"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="#FFFFFF"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvPlayerCourseTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Course Lectures"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/tvPlayerLessonCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loading playlist..."
+                android:textColor="#38BDF8"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔒 DRM SECURE"
+            android:textColor="#10B981"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:background="@drawable/bg_glass_pill"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="3dp" />
+    </LinearLayout>
+
+    <!-- Video Player Container (Aspect Ratio 16:9 in Portrait) -->
+    <RelativeLayout
+        android:id="@+id/videoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="225dp"
+        android:background="#000000">
+
+        <!-- Native Google ExoPlayer View (100% Native, Zero Watermark) -->
+        <androidx.media3.ui.PlayerView
+            android:id="@+id/exoPlayerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:use_controller="true"
+            app:show_buffering="when_playing"
+            app:resize_mode="fit" />
+
+        <!-- Fallback WebView (Only used if YouTube or legacy fallback) -->
+        <WebView
+            android:id="@+id/playerWebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <!-- Loading Spinner -->
+        <ProgressBar
+            android:id="@+id/playerLoader"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:indeterminateTint="#6366F1"
+            android:layout_centerInParent="true" />
+
+        <!-- Double Tap Seek Left Bubble (-10s) -->
+        <LinearLayout
+            android:id="@+id/seekLeftBubble"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="32dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/bg_seek_bubble"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_replay_10"
+                android:tint="#38BDF8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-10s"
+                android:textColor="#38BDF8"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Double Tap Seek Right Bubble (+10s) -->
+        <LinearLayout
+            android:id="@+id/seekRightBubble"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/bg_seek_bubble"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_forward_10"
+                android:tint="#38BDF8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+10s"
+                android:textColor="#38BDF8"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Floating Quick Control Pills Overlay -->
+        <LinearLayout
+            android:id="@+id/floatingControlsBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Playback Speed Button -->
+            <TextView
+                android:id="@+id/btnSpeedToggle"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:paddingHorizontal="10dp"
+                android:text="1.0x"
+                android:textColor="#38BDF8"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_glass_pill"
+                android:layout_marginEnd="6dp" />
+
+            <!-- Lock Screen Controls Button -->
+            <ImageButton
+                android:id="@+id/btnLockToggle"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_lock_open"
+                android:tint="#FFFFFF"
+                android:background="@drawable/bg_glass_pill"
+                android:padding="6dp"
+                android:layout_marginEnd="6dp"
+                android:contentDescription="Lock Controls" />
+
+            <!-- Fullscreen Toggle Button -->
+            <ImageButton
+                android:id="@+id/btnFullscreenToggle"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_fullscreen"
+                android:tint="#FFFFFF"
+                android:background="@drawable/bg_glass_pill"
+                android:padding="6dp"
+                android:contentDescription="Fullscreen" />
+        </LinearLayout>
+
+        <!-- Screen Lock Overlay (Shown when user locks player controls) -->
+        <LinearLayout
+            android:id="@+id/layoutLockOverlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_glass_pill"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_lock"
+                android:tint="#EF4444"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/btnUnlockTap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Screen Locked • Tap to Unlock"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!-- Info & Controls Strip Below Player -->
+    <LinearLayout
+        android:id="@+id/playerMetaSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#131B2E"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvCurrentLesson"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Lecture Title"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end" />
+
+            <Button
+                android:id="@+id/btnNextLesson"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Next ▶"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/bg_gradient_brand"
+                android:paddingHorizontal="14dp"
+                android:layout_marginStart="10dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tip: Double-tap left/right on video to jump 10 seconds"
+            android:textColor="#64748B"
+            android:textSize="11sp"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+    <!-- Playlist Section Header -->
+    <LinearLayout
+        android:id="@+id/playlistHeaderSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="8dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Course Lessons &amp; Lectures"
+            android:textColor="#F8FAFC"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvPlaylistCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 Lessons"
+            android:textColor="#38BDF8"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:background="@drawable/bg_glass_pill"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp" />
+    </LinearLayout>
+
+    <!-- Recycler View for Playlist Lessons -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvLessonList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false" />
+
+</LinearLayout>

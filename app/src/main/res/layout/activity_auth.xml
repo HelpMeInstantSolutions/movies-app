@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#0B0F19">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp">
+
+        <!-- Top Header & Branding -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="28dp">
+
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@mipmap/ic_launcher"
+                android:elevation="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Insight Academy"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.02"
+                android:layout_marginTop="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Gateway to Government Exam Success"
+                android:textColor="#38BDF8"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+        <!-- Main Auth Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_rounded_card"
+            android:padding="24dp"
+            android:elevation="4dp">
+
+            <!-- Segmented Tab Switcher (Sign In vs Register) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="#1A2438"
+                android:orientation="horizontal"
+                android:padding="4dp"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:id="@+id/tabLogin"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Sign In"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/bg_tab_active" />
+
+                <TextView
+                    android:id="@+id/tabRegister"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Create Account"
+                    android:textColor="#94A3B8"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:background="@null" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvAuthTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome Back 👋"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvAuthSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter your credentials to access your enrolled courses"
+                android:textColor="#94A3B8"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Name Input Field (For Register) -->
+            <LinearLayout
+                android:id="@+id/containerName"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_input_field"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="14dp"
+                android:layout_marginBottom="14dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_person"
+                    android:tint="#94A3B8"
+                    android:layout_marginEnd="12dp" />
+
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Full Name"
+                    android:background="@null"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#64748B"
+                    android:textSize="14sp"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <!-- Email Input Field -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_input_field"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="14dp"
+                android:layout_marginBottom="14dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_email"
+                    android:tint="#94A3B8"
+                    android:layout_marginEnd="12dp" />
+
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Email Address"
+                    android:background="@null"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#64748B"
+                    android:textSize="14sp"
+                    android:inputType="textEmailAddress" />
+            </LinearLayout>
+
+            <!-- Password Input Field -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_input_field"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="14dp"
+                android:layout_marginBottom="24dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_lock"
+                    android:tint="#94A3B8"
+                    android:layout_marginEnd="12dp" />
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Password (min 6 characters)"
+                    android:background="@null"
+                    android:textColor="#FFFFFF"
+                    android:textColorHint="#64748B"
+                    android:textSize="14sp"
+                    android:inputType="textPassword" />
+            </LinearLayout>
+
+            <!-- Submit Button with Gradient -->
+            <Button
+                android:id="@+id/btnSubmitAuth"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Sign In to Account"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/bg_gradient_brand" />
+
+            <TextView
+                android:id="@+id/tvToggleAuth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="18dp"
+                android:text="New to Insight? Create an account"
+                android:textColor="#38BDF8"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔒 High Quality DRM-Protected Video Learning"
+            android:textColor="#64748B"
+            android:textSize="11sp"
+            android:layout_marginTop="20dp" />
+
+    </LinearLayout>
+</ScrollView>
