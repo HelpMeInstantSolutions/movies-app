@@ -18,6 +18,8 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebResourceError
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ProgressBar
@@ -229,6 +231,11 @@ class PlayerActivity : AppCompatActivity() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 progressBar.visibility = View.GONE
             }
+
+            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+                super.onReceivedError(view, request, error)
+                progressBar.visibility = View.GONE
+            }
         }
     }
 
@@ -243,6 +250,19 @@ class PlayerActivity : AppCompatActivity() {
             runOnUiThread {
                 // Seamlessly advance to Part 2 / next stream
                 playNextStream()
+            }
+        }
+
+        @JavascriptInterface
+        fun onVideoError(details: String) {
+            runOnUiThread {
+                progressBar.visibility = View.GONE
+                if (currentStreamIndex + 1 < streamsList.size) {
+                    Snackbar.make(videoContainer, "Current stream unavailable on Dailymotion. Continuing to next part...", Snackbar.LENGTH_LONG).show()
+                    playNextStream()
+                } else {
+                    Snackbar.make(videoContainer, "This video stream is unavailable or removed on Dailymotion.", Snackbar.LENGTH_LONG).show()
+                }
             }
         }
     }
@@ -476,6 +496,19 @@ class PlayerActivity : AppCompatActivity() {
                 val json = JSONObject(response)
                 val data = json.optJSONObject("data")
 
+                val isAvailable = data?.optBoolean("is_available", true) ?: true
+                if (!isAvailable) {
+                    progressBar.visibility = View.GONE
+                    if (currentStreamIndex + 1 < streamsList.size) {
+                        Snackbar.make(videoContainer, "Part 1 not found on Dailymotion. Continuing to Part 2...", Snackbar.LENGTH_LONG).show()
+                        playNextStream()
+                        return@launch
+                    } else {
+                        Snackbar.make(videoContainer, "This video does not exist or has been deleted on Dailymotion.", Snackbar.LENGTH_LONG).show()
+                        return@launch
+                    }
+                }
+
                 val hlsStream = data?.optString("hls_url", "")
                 if (!hlsStream.isNullOrEmpty() && hlsStream.startsWith("http")) {
                     playDirectUrl(hlsStream)
@@ -526,6 +559,10 @@ class PlayerActivity : AppCompatActivity() {
                                 if (ev === 'video_end' || ev === 'ended') {
                                     if (window.AndroidBridge && window.AndroidBridge.onVideoEnded) {
                                         window.AndroidBridge.onVideoEnded();
+                                    }
+                                } else if (ev === 'error' || ev === 'playback_failed' || (data.data && data.data.error)) {
+                                    if (window.AndroidBridge && window.AndroidBridge.onVideoError) {
+                                        window.AndroidBridge.onVideoError(JSON.stringify(data));
                                     }
                                 }
                             }
