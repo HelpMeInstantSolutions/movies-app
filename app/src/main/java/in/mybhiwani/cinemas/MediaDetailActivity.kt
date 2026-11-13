@@ -104,10 +104,22 @@ class MediaDetailActivity : AppCompatActivity() {
 
         btnStartStreaming.setOnClickListener {
             if (allEpisodesList.isNotEmpty()) {
+                // Ensure sorted so Part 1 always launches first
+                allEpisodesList.sortWith(compareBy({ it.episodeNumber }, { it.sortOrder }, { it.id }))
                 openPlayer(allEpisodesList[0])
             } else {
                 Snackbar.make(rvSeasons, "No streamable video found yet", Snackbar.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun parseDurationToSeconds(durStr: String): Int {
+        val s = durStr.trim()
+        val parts = s.split(":")
+        return when (parts.size) {
+            3 -> (parts[0].toIntOrNull() ?: 0) * 3600 + (parts[1].toIntOrNull() ?: 0) * 60 + (parts[2].toIntOrNull() ?: 0)
+            2 -> (parts[0].toIntOrNull() ?: 0) * 60 + (parts[1].toIntOrNull() ?: 0)
+            else -> 0
         }
     }
 
@@ -175,6 +187,9 @@ class MediaDetailActivity : AppCompatActivity() {
                                 }
                             }
 
+                            // Sort episodes within season/movie by episodeNumber
+                            episodesInSeason.sortWith(compareBy({ it.episodeNumber }, { it.sortOrder }, { it.id }))
+
                             totalEpCount += episodesInSeason.size
                             seasonsList.add(
                                 MediaSeason(
@@ -191,10 +206,27 @@ class MediaDetailActivity : AppCompatActivity() {
                         }
                     }
 
+                    // Sort overall episode list so Part 1 is always index 0
+                    allEpisodesList.sortWith(compareBy({ it.episodeNumber }, { it.sortOrder }, { it.id }))
+
                     mediaLoader.visibility = View.GONE
 
                     if (mediaType == "movie") {
-                        tvMediaStats.text = "HD 1080p • Dolby Atmos Audio"
+                        // Calculate combined runtime of all parts
+                        var totalMovieSeconds = 0
+                        for (ep in allEpisodesList) {
+                            totalMovieSeconds += parseDurationToSeconds(ep.duration)
+                        }
+
+                        val formattedRuntime = if (totalMovieSeconds > 0) {
+                            val hrs = totalMovieSeconds / 3600
+                            val mins = (totalMovieSeconds % 3600) / 60
+                            if (hrs > 0) "${hrs}h ${mins}m" else "${mins}m"
+                        } else {
+                            data.optString("duration", "2h 44m")
+                        }
+
+                        tvMediaStats.text = "HD 1080p • Dolby Atmos • $formattedRuntime"
                         tvSeasonCountPill.text = "Feature Film"
                         seriesSectionHeader.visibility = View.GONE
                         layoutEmptyMedia.visibility = View.GONE

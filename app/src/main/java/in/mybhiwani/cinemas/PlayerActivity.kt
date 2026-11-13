@@ -87,6 +87,7 @@ class PlayerActivity : AppCompatActivity() {
     private var isFullscreen: Boolean = false
     private var isScreenLocked: Boolean = false
     private var isMovieMode: Boolean = true
+    private var lastStreamStartTimeMs: Long = 0L
 
     private lateinit var gestureDetector: GestureDetector
     private val hideHandler = Handler(Looper.getMainLooper())
@@ -199,7 +200,6 @@ class PlayerActivity : AppCompatActivity() {
                     val ep = streamsList[newIndex]
                     episodeAdapter.updateCurrentVideoId(ep.id)
                     tvCurrentStreamTitle.text = if (isMovieMode) mediaTitle else ep.title
-                    tvPlayerStreamCounter.text = if (isMovieMode) "Full Feature Film" else "Stream ${currentStreamIndex + 1} of ${streamsList.size}"
                 }
             }
         })
@@ -235,6 +235,11 @@ class PlayerActivity : AppCompatActivity() {
     inner class WebAppInterface {
         @JavascriptInterface
         fun onVideoEnded() {
+            val elapsed = System.currentTimeMillis() - lastStreamStartTimeMs
+            // Must have been playing for at least 10 seconds to prevent premature skip on ads or init
+            if (elapsed < 10000) {
+                return
+            }
             runOnUiThread {
                 // Seamlessly advance to Part 2 / next stream
                 playNextStream()
@@ -395,6 +400,16 @@ class PlayerActivity : AppCompatActivity() {
             .start()
     }
 
+    private fun parseDurationToSeconds(durStr: String): Int {
+        val s = durStr.trim()
+        val parts = s.split(":")
+        return when (parts.size) {
+            3 -> (parts[0].toIntOrNull() ?: 0) * 3600 + (parts[1].toIntOrNull() ?: 0) * 60 + (parts[2].toIntOrNull() ?: 0)
+            2 -> (parts[0].toIntOrNull() ?: 0) * 60 + (parts[1].toIntOrNull() ?: 0)
+            else -> 0
+        }
+    }
+
     /**
      * Seamless multi-link gapless playback:
      * If a movie has multiple parts/links, they are played continuously one after another.
@@ -403,10 +418,10 @@ class PlayerActivity : AppCompatActivity() {
     private fun playStream(episode: MediaEpisode) {
         currentStreamIndex = streamsList.indexOfFirst { it.id == episode.id }.coerceAtLeast(0)
         episodeAdapter.updateCurrentVideoId(episode.id)
+        lastStreamStartTimeMs = System.currentTimeMillis()
 
         // For movie mode: Always keep Movie Title!
         tvCurrentStreamTitle.text = if (isMovieMode) mediaTitle else episode.title
-        tvPlayerStreamCounter.text = if (isMovieMode) "Full Feature Film" else "Stream ${currentStreamIndex + 1} of ${streamsList.size}"
 
         progressBar.visibility = View.VISIBLE
 
@@ -453,8 +468,8 @@ class PlayerActivity : AppCompatActivity() {
                 val tokenApiUrl = "https://cinemas.mybhiwani.in/api/video.php?video_id=$cleanId"
                 val response = withContext(Dispatchers.IO) {
                     val conn = URL(tokenApiUrl).openConnection() as HttpURLConnection
-                    conn.connectTimeout = 6000
-                    conn.readTimeout = 6000
+                    conn.connectTimeout = 8000
+                    conn.readTimeout = 8000
                     conn.inputStream.bufferedReader().use { it.readText() }
                 }
 
@@ -465,8 +480,12 @@ class PlayerActivity : AppCompatActivity() {
                 if (!hlsStream.isNullOrEmpty() && hlsStream.startsWith("http")) {
                     playDirectUrl(hlsStream)
                 } else {
-                    val embedUrl = data?.optString("embed_url", "https://geo.dailymotion.com/player/xtv3w.html?video=$cleanId&autoplay=1&mute=0&controls=1&ui-logo=0&ui-watermark=0&sharing-enable=0")
-                    loadInWebViewWithUrl(embedUrl ?: "https://geo.dailymotion.com/player/xtv3w.html?video=$cleanId")
+                    val embedUrl = data?.optString("embed_url", "")
+                    if (!embedUrl.isNullOrEmpty() && embedUrl.startsWith("http")) {
+                        loadInWebViewWithUrl(embedUrl)
+                    } else {
+                        loadInWebView(cleanId)
+                    }
                 }
             } catch (e: Exception) {
                 loadInWebView(cleanId)
@@ -475,7 +494,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun loadInWebView(cleanId: String) {
-        val dmParams = "autoplay=1&mute=0&controls=1&ui-logo=0&ui-watermark=0&sharing-enable=0&endscreen-enable=0&ui-start-screen-info=0"
+        val dmParams = "autoplay=1&mute=0&controls=1&ui-logo=0&ui-watermark=0&sharing-enable=0&endscreen-enable=0&ui-start-screen-info=0&queue-enable=0"
         val playerUrl = "https://geo.dailymotion.com/player/xtv3w.html?video=$cleanId&$dmParams"
         loadInWebViewWithUrl(playerUrl)
     }
@@ -502,9 +521,12 @@ class PlayerActivity : AppCompatActivity() {
                     window.addEventListener('message', function(e) {
                         try {
                             var data = (typeof e.data === 'string') ? JSON.parse(e.data) : e.data;
-                            if (data && (data.event === 'ended' || data.event === 'video_end')) {
-                                if (window.AndroidBridge && window.AndroidBridge.onVideoEnded) {
-                                    window.AndroidBridge.onVideoEnded();
+                            if (data) {
+                                var ev = data.event || data.type || '';
+                                if (ev === 'video_end' || ev === 'ended') {
+                                    if (window.AndroidBridge && window.AndroidBridge.onVideoEnded) {
+                                        window.AndroidBridge.onVideoEnded();
+                                    }
                                 }
                             }
                         } catch(err){}
@@ -519,10 +541,14 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun playNextStream() {
         if (currentStreamIndex + 1 < streamsList.size) {
-            playStream(streamsList[currentStreamIndex + 1])
+            val nextEp = streamsList[currentStreamIndex + 1]
+            if (isMovieMode) {
+                Snackbar.make(videoContainer, "Continuing Feature Film...", Snackbar.LENGTH_SHORT).show()
+            }
+            playStream(nextEp)
         } else {
             if (isMovieMode) {
-                Snackbar.make(videoContainer, "Movie Completed", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(videoContainer, "Movie Finished", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -533,8 +559,8 @@ class PlayerActivity : AppCompatActivity() {
                 val mId = mediaId
                 val result = withContext(Dispatchers.IO) {
                     val conn = URL("https://cinemas.mybhiwani.in/api/movies.php?action=detail&id=$mId").openConnection() as HttpURLConnection
-                    conn.connectTimeout = 6000
-                    conn.readTimeout = 6000
+                    conn.connectTimeout = 8000
+                    conn.readTimeout = 8000
                     conn.inputStream.bufferedReader().use { it.readText() }
                 }
 
@@ -564,7 +590,7 @@ class PlayerActivity : AppCompatActivity() {
                                             description = epObj.optString("description", ""),
                                             dailymotionId = epObj.optString("dailymotion_id", ""),
                                             duration = epObj.optString("duration", "45:00"),
-                                            episodeNumber = epObj.optInt("episode_number", j + 1),
+                                            episodeNumber = epObj.optInt("episode_number", epObj.optInt("sort_order", j + 1)),
                                             sortOrder = epObj.optInt("sort_order", j + 1),
                                             isFreePreview = true
                                         )
@@ -574,12 +600,29 @@ class PlayerActivity : AppCompatActivity() {
                         }
                     }
 
+                    // Strict sorting: Part 1 MUST be index 0
+                    streamsList.sortWith(compareBy({ it.episodeNumber }, { it.sortOrder }, { it.id }))
+
+                    // Calculate total combined runtime for movies
+                    var totalMovieSeconds = 0
+                    for (s in streamsList) {
+                        totalMovieSeconds += parseDurationToSeconds(s.duration)
+                    }
+
+                    val formattedTotalRuntime = if (totalMovieSeconds > 0) {
+                        val hrs = totalMovieSeconds / 3600
+                        val mins = (totalMovieSeconds % 3600) / 60
+                        if (hrs > 0) "${hrs}h ${mins}m" else "${mins}m"
+                    } else {
+                        data.optString("duration", "2h 44m")
+                    }
+
                     // For Movie with multiple links: Seamlessly hide playlist list so user feels it's 1 single movie
                     if (isMovieMode) {
                         playlistHeaderSection.visibility = View.GONE
                         rvStreamsList.visibility = View.GONE
                         btnNextStream.visibility = View.GONE
-                        tvPlayerStreamCounter.text = "Full Feature Film"
+                        tvPlayerStreamCounter.text = "Full Feature Film • $formattedTotalRuntime"
                         tvCurrentStreamTitle.text = mediaTitle
                     } else {
                         playlistHeaderSection.visibility = View.VISIBLE
@@ -590,10 +633,12 @@ class PlayerActivity : AppCompatActivity() {
 
                     episodeAdapter.notifyDataSetChanged()
 
-                    val target = if (initialVideoId > 0) {
-                        streamsList.find { it.id == initialVideoId } ?: streamsList.firstOrNull()
-                    } else {
+                    // For movie mode: ALWAYS start from Part 1 (first item)
+                    val target = if (isMovieMode) {
                         streamsList.firstOrNull()
+                    } else {
+                        if (initialVideoId > 0) streamsList.find { it.id == initialVideoId } ?: streamsList.firstOrNull()
+                        else streamsList.firstOrNull()
                     }
 
                     target?.let { playStream(it) }
